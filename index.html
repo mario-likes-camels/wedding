@@ -8,9 +8,9 @@
     
     <style>
         :root {
-            --primary: #5a6b5c; /* Sophisticated Sage Green */
-            --bg: #f9f8f6;      /* Fine Warm White */
-            --text: #2c3e35;    /* Deep Slate */
+            --primary: #5a6b5c; 
+            --bg: #f9f8f6;      
+            --text: #2c3e35;    
             --light-taupe: #f0ede9;
         }
         * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -25,7 +25,6 @@
         h1, h2, h3 { font-family: 'Cormorant Garamond', serif; font-weight: 300; letter-spacing: 1px; }
         p { font-weight: 300; font-size: 0.95rem; }
         
-        /* Hero Section with Fixed Parallax Background */
         header {
             height: 100vh;
             display: flex;
@@ -35,12 +34,11 @@
             padding: 20px;
             background: linear-gradient(rgba(249, 248, 246, 0.45), rgba(249, 248, 246, 0.45)), 
                         url('https://images.unsplash.com/photo-1469371670807-013ccf25f16a?q=80&w=1600') no-repeat center center/cover;
-            background-attachment: fixed; /* Parallax effect */
+            background-attachment: fixed;
         }
         header h1 { font-size: 4.5rem; color: var(--primary); margin-bottom: 10px; }
         header p { font-size: 1.1rem; letter-spacing: 4px; text-transform: uppercase; margin-bottom: 30px; }
 
-        /* Countdown Timer Styling */
         .countdown-container {
             display: flex;
             gap: 25px;
@@ -62,50 +60,49 @@
         }
         .section-subtitle { font-style: italic; font-family: 'Cormorant Garamond', serif; font-size: 1.3rem; margin-bottom: 40px; opacity: 0.8;}
 
-        /* Scroll-Animated Timeline Architecture */
-        .timeline {
-            position: relative; max-width: 700px; margin: 40px auto 0 auto; padding: 20px 0;
-        }
-        .timeline::after {
-            content: ''; position: absolute; width: 1px; background-color: var(--primary); top: 0; bottom: 0; left: 50%; opacity: 0.25;
-        }
+        /* Timeline Styling */
+        .timeline { position: relative; max-width: 750px; margin: 40px auto 0 auto; padding: 20px 0; }
+        .timeline::after { content: ''; position: absolute; width: 1px; background-color: var(--primary); top: 0; bottom: 0; left: 50%; opacity: 0.25; }
         .timeline-item {
-            padding: 10px 40px; position: relative; background-color: inherit; width: 50%; text-align: right;
-            opacity: 0; transform: translateY(40px); transition: all 1s ease; /* Animation prep */
+            padding: 20px 40px; position: relative; background-color: inherit; width: 50%; text-align: right;
+            opacity: 0; transform: translateY(40px); transition: all 1s ease;
         }
         .timeline-item.left { left: 0; }
         .timeline-item.right { left: 50%; text-align: left; }
         .timeline-item::after {
             content: ''; position: absolute; width: 10px; height: 10px; right: -5px; background-color: var(--bg);
-            border: 1px solid var(--primary); top: 15px; border-radius: 50%; z-index: 1;
+            border: 1px solid var(--primary); top: 25px; border-radius: 50%; z-index: 1;
         }
         .timeline-item.right::after { left: -5px; }
-        .timeline-date { font-family: 'Cormorant Garamond', serif; font-size: 1.5rem; color: var(--primary); margin-bottom: 5px; font-weight: 600;}
-        .timeline-title { font-size: 0.85rem; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 8px; font-weight: 400;}
-        
-        /* Target state for Scroll Animation */
+        .timeline-date { font-family: 'Cormorant Garamond', serif; font-size: 1.6rem; color: var(--primary); margin-bottom: 5px; font-weight: 600;}
+        .timeline-title { font-size: 0.9rem; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 8px; font-weight: 400; color: #435044;}
         .timeline-item.visible { opacity: 1; transform: translateY(0); }
 
-        /* RSVP Form Card Styling */
+        /* Form Styling */
         .rsvp-container {
             background: white; padding: 50px 40px; border-radius: 2px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.02); max-width: 500px; margin: 0 auto;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.02); max-width: 550px; margin: 0 auto;
         }
+        .form-instructions { font-size: 0.9rem; margin-bottom: 30px; color: #777; font-style: italic; }
         .form-group { text-align: left; margin-bottom: 25px; }
         .form-group label { display: block; font-size: 0.8rem; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 1.5px;}
-        input, select {
+        input, select, textarea {
             width: 100%; padding: 14px; border: 1px solid #ddd; border-radius: 2px; font-family: inherit; font-size: 0.95rem; font-weight: 200; background: #fafafa; transition: 0.3s;
         }
-        input:focus, select:focus { outline: none; border-color: var(--primary); background: white; }
+        input:focus, select:focus, textarea:focus { outline: none; border-color: var(--primary); background: white; }
+        textarea { height: 100px; resize: vertical; }
         
         button {
             background-color: var(--primary); color: white; border: none; padding: 16px 50px;
             font-size: 0.85rem; text-transform: uppercase; letter-spacing: 2px; border-radius: 2px; cursor: pointer; transition: 0.4s;
         }
         button:hover { background-color: #435044; letter-spacing: 3px; }
-        #successMessage { display: none; color: var(--primary); font-size: 1.3rem; font-family: 'Cormorant Garamond', serif; font-style: italic; margin-top: 20px; }
+        
+        #successMessage { display: none; margin-top: 20px; }
+        #successMessage h3 { font-size: 1.8rem; color: var(--primary); margin-bottom: 10px; }
+        .secondary-btn { background-color: transparent; color: var(--primary); border: 1px solid var(--primary); margin-top: 25px; }
+        .secondary-btn:hover { background-color: var(--light-taupe); color: #435044; }
 
-        /* Responsive Breakpoint for Mobile View */
         @media screen and (max-width: 600px) {
             header h1 { font-size: 3.2rem; }
             .countdown-container { gap: 15px; padding: 15px 25px; }
@@ -142,28 +139,28 @@
 
     <div class="section" style="background-color: var(--light-taupe); max-width: 100%;">
         <h2>Our Story</h2>
-        <p class="section-subtitle">How we got here</p>
+        <p class="section-subtitle">A collection of calculated risks and minor medical emergencies</p>
         
         <div class="timeline">
             <div class="timeline-item left">
-                <div class="timeline-date">2021</div>
-                <div class="timeline-title">The First Meeting</div>
-                <p>A simple chance encounter that slowly turned into an unforgettable conversation, marking the beginning of everything.</p>
+                <div class="timeline-date">2024</div>
+                <div class="timeline-title">The Hinge Match</div>
+                <p>We swiped right and kicked off an endless stream of jokes. Somewhere in between all the laughs, Patrick won her over completely by leveraging his secret weapon: Natasha becoming absolutely obsessed with his family.</p>
             </div>
             <div class="timeline-item right">
-                <div class="timeline-date">2023</div>
-                <div class="timeline-title">The First Adventure</div>
-                <p>Packing bags and exploring new horizons together. We realized home wasn’t a place, but a person.</p>
+                <div class="timeline-date">2024 (Slight Detour)</div>
+                <div class="timeline-title">The 4th Date Incident</div>
+                <p>Patrick played way too much tennis and spent the entire night violently vomiting. This left Natasha to bond beautifully with his sister, set to a romantic backdrop of distant, chaotic vomit sounds. She still stuck around.</p>
             </div>
             <div class="timeline-item left">
                 <div class="timeline-date">2025</div>
-                <div class="timeline-title">The Proposal</div>
-                <p>Surrounded by a scenic landscape, a simple question was asked, and a joyful 'Yes' locked in our forever.</p>
+                <div class="timeline-title">The Big Move & Jetsetting</div>
+                <p>We packed up and moved to Melbourne! We spent the year building a life together and running off overseas every chance we got. Natasha absolute crushed it in her career, while Patrick's Computer Science PhD... well, who knows what happens in there.</p>
             </div>
             <div class="timeline-item right">
-                <div class="timeline-date">2027</div>
-                <div class="timeline-title">The Wedding Day</div>
-                <p>The beginning of our official chapter as husband and wife, celebrated alongside our favourite people.</p>
+                <div class="timeline-date">2026</div>
+                <div class="timeline-title">The Beach Proposal</div>
+                <p>Right after Natasha finished aggressively yelling at Patrick about finally completing his PhD thesis, he pulled out a ring and proposed right on the sand. Timing is everything.</p>
             </div>
         </div>
     </div>
@@ -172,16 +169,21 @@
         <h2>RSVP</h2>
         <p class="section-subtitle">Kindly reply by January 15, 2027</p>
         <div class="rsvp-container">
+            
+            <p class="form-instructions">
+                Note: To help us keep track of numbers and specific dietary needs, <strong>please submit a separate form for each individual guest</strong> attending.
+            </p>
+
             <form id="rsvpForm">
                 <input type="text" id="honeypot" style="display:none !important" tabindex="-1" autocomplete="off">
                 
                 <div class="form-group">
                     <label for="name">Full Name</label>
-                    <input type="text" id="name" required placeholder="Your Name">
+                    <input type="text" id="name" required placeholder="Guest's Full Name">
                 </div>
                 
                 <div class="form-group">
-                    <label for="attending">Will you attend?</label>
+                    <label for="attending">Will this guest attend?</label>
                     <select id="attending" required>
                         <option value="" disabled selected>Select an option</option>
                         <option value="Yes">Joyfully Accepts</option>
@@ -191,32 +193,41 @@
                 
                 <div class="form-group">
                     <label for="dietary">Dietary Restrictions</label>
-                    <input type="text" id="dietary" placeholder="e.g., None, Vegetarian, Allergies">
+                    <input type="text" id="dietary" placeholder="e.g., None, Vegetarian, Gluten Free">
+                </div>
+
+                <div class="form-group">
+                    <label for="notes">Notes / Message for the couple</label>
+                    <textarea id="notes" placeholder="Write any extra messages or song suggestions here..."></textarea>
                 </div>
                 
                 <button type="submit" id="submitBtn">Submit RSVP</button>
             </form>
-            <div id="successMessage">✨ Thank you! Your RSVP has been elegantly received.</div>
+
+            <div id="successMessage">
+                <h3>Thank You!</h3>
+                <p>The RSVP has been successfully logged into our spreadsheet.</p>
+                <button type="button" class="secondary-btn" id="anotherBtn">RSVP for Another Guest</button>
+            </div>
+
         </div>
     </div>
 
     <script>
         // -----------------------------------------------------------------
-        // 1. CONFIGURATION: PASTE YOUR UNIQUE GOOGLE WEB APP URL HERE BELOW
+        // CONFIGURATION: PASTE YOUR UNIQUE GOOGLE WEB APP URL HERE
         // -----------------------------------------------------------------
-        const GOOGLE_API_URL = "YOUR_WEB_APP_URL_HERE";
+        const GOOGLE_API_URL = "https://script.google.com/macros/s/AKfycbxwRc4ATnnIxWUehP9ZV-B0tlRpyd7QE7RK4FcYSDMfZ6GzZa7q2eBXaRYXv43u0VZi2w/exec";
 
-
-        // 2. LIVE COUNTDOWN TIMER LOGIC
+        // LIVE COUNTDOWN TIMER LOGIC
         const targetDate = new Date("February 20, 2027 16:00:00").getTime();
-
         const countdownInterval = setInterval(() => {
             const now = new Date().getTime();
             const difference = targetDate - now;
 
             if (difference < 0) {
                 clearInterval(countdownInterval);
-                document.querySelector(".countdown-container").innerHTML = "<p style='text-transform:uppercase; letter-spacing:2px;'>Today is the Day!</p>";
+                document.querySelector(".countdown-container").innerHTML = "<p>Today is the Day!</p>";
                 return;
             }
 
@@ -231,36 +242,36 @@
             document.getElementById("seconds").innerText = seconds < 10 ? "0" + seconds : seconds;
         }, 1000);
 
-
-        // 3. SCROLL TIMELINE ANIMATION (IntersectionObserver API)
+        // SCROLL TIMELINE ANIMATION
         const timelineItems = document.querySelectorAll('.timeline-item');
         const observerOptions = { threshold: 0.15, rootMargin: "0px 0px -50px 0px" };
-
         const timelineObserver = new IntersectionObserver((entries, observer) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
                     entry.target.classList.add('visible');
-                    observer.unobserve(entry.target); // Animates once
+                    observer.unobserve(entry.target);
                 }
             });
         }, observerOptions);
-
         timelineItems.forEach(item => timelineObserver.observe(item));
 
+        // RSVP FORM CONTROLLER
+        const rsvpForm = document.getElementById('rsvpForm');
+        const successMessage = document.getElementById('successMessage');
+        const submitBtn = document.getElementById('submitBtn');
 
-        // 4. RSVP FORM CONTROLLER (Asynchronous Fetch Pipeline)
-        document.getElementById('rsvpForm').addEventListener('submit', async (e) => {
+        rsvpForm.addEventListener('submit', async (e) => {
             e.preventDefault();
-            if (document.getElementById('honeypot').value) return; // Bot filter
+            if (document.getElementById('honeypot').value) return; 
 
-            const submitBtn = document.getElementById('submitBtn');
             submitBtn.innerText = "Sending...";
             submitBtn.disabled = true;
 
             const payload = {
                 name: document.getElementById('name').value,
                 attending: document.getElementById('attending').value,
-                dietary: document.getElementById('dietary').value || "None"
+                dietary: document.getElementById('dietary').value || "None",
+                notes: document.getElementById('notes').value || "None"
             };
 
             try {
@@ -272,10 +283,11 @@
                 
                 const result = await response.json();
                 if (result.result === 'success') {
-                    document.getElementById('rsvpForm').style.display = 'none';
-                    document.getElementById('successMessage').style.display = 'block';
+                    // Hide form, show loop screen
+                    rsvpForm.style.display = 'none';
+                    successMessage.style.display = 'block';
                 } else {
-                    alert("Submission error. Please verify setup.");
+                    alert("Submission error. Please verify configuration.");
                     submitBtn.disabled = false;
                     submitBtn.innerText = "Submit RSVP";
                 }
@@ -285,6 +297,15 @@
                 submitBtn.disabled = false;
                 submitBtn.innerText = "Submit RSVP";
             }
+        });
+
+        // Reset system to accept another guest entry seamlessly
+        document.getElementById('anotherBtn').addEventListener('click', () => {
+            rsvpForm.reset(); // Clear all inputs
+            successMessage.style.display = 'none';
+            rsvpForm.style.display = 'block';
+            submitBtn.disabled = false;
+            submitBtn.innerText = "Submit RSVP";
         });
     </script>
 </body>
