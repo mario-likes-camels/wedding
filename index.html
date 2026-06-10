@@ -3,84 +3,181 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Our Wedding</title>
-    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Montserrat:wght@300;400&display=swap" rel="stylesheet">
+    <title>Natasha & Patrick's Wedding</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,400&family=Montserrat:wght@200;300;400&display=swap" rel="stylesheet">
     
     <style>
         :root {
-            --primary: #5a6b5c; /* Sage Green */
-            --bg: #f9f8f6;      /* Warm White */
-            --text: #2c3e35;    /* Dark Slate */
+            --primary: #5a6b5c; /* Sophisticated Sage Green */
+            --bg: #f9f8f6;      /* Fine Warm White */
+            --text: #2c3e35;    /* Deep Slate */
+            --light-taupe: #f0ede9;
         }
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body {
             font-family: 'Montserrat', sans-serif;
             background-color: var(--bg);
             color: var(--text);
-            line-height: 1.6;
+            line-height: 1.8;
             text-align: center;
+            overflow-x: hidden;
         }
-        h1, h2, h3 { font-family: 'Cormorant Garamond', serif; font-weight: 400; }
+        h1, h2, h3 { font-family: 'Cormorant Garamond', serif; font-weight: 300; letter-spacing: 1px; }
+        p { font-weight: 300; font-size: 0.95rem; }
         
-        /* Hero Section */
+        /* Hero Section with Fixed Parallax Background */
         header {
-            padding: 100px 20px;
-            background: linear-gradient(rgba(255,255,255,0.8), rgba(255,255,255,0.8)), url('https://images.unsplash.com/photo-1519741497674-611481863552?q=80&w=1200') no-repeat center center/cover;
-            border-bottom: 1px solid #e0dad3;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            background: linear-gradient(rgba(249, 248, 246, 0.45), rgba(249, 248, 246, 0.45)), 
+                        url('https://images.unsplash.com/photo-1469371670807-013ccf25f16a?q=80&w=1600') no-repeat center center/cover;
+            background-attachment: fixed; /* Parallax effect */
         }
-        header h1 { font-size: 3.5rem; italic; margin-bottom: 10px; color: var(--primary); }
-        header p { font-size: 1.2rem; letter-spacing: 2px; text-transform: uppercase; }
+        header h1 { font-size: 4.5rem; color: var(--primary); margin-bottom: 10px; }
+        header p { font-size: 1.1rem; letter-spacing: 4px; text-transform: uppercase; margin-bottom: 30px; }
 
-        /* Details Section */
-        .section { padding: 80px 20px; max-width: 800px; margin: 0 auto; }
-        .section h2 { font-size: 2.5rem; margin-bottom: 20px; color: var(--primary); }
+        /* Countdown Timer Styling */
+        .countdown-container {
+            display: flex;
+            gap: 25px;
+            margin-top: 20px;
+            background: rgba(255, 255, 255, 0.6);
+            padding: 20px 40px;
+            border-radius: 2px;
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(255,255,255,0.5);
+        }
+        .countdown-item { display: flex; flex-direction: column; align-items: center; }
+        .countdown-num { font-family: 'Cormorant Garamond', serif; font-size: 2.5rem; color: var(--primary); font-weight: 400; }
+        .countdown-label { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 2px; opacity: 0.8; }
+
+        .section { padding: 100px 20px; max-width: 900px; margin: 0 auto; }
+        .section h2 { font-size: 2.8rem; margin-bottom: 15px; color: var(--primary); position: relative; display: inline-block;}
+        .section h2::after {
+            content: ''; display: block; width: 50px; height: 1px; background: var(--primary); margin: 15px auto 0 auto; opacity: 0.5;
+        }
+        .section-subtitle { font-style: italic; font-family: 'Cormorant Garamond', serif; font-size: 1.3rem; margin-bottom: 40px; opacity: 0.8;}
+
+        /* Scroll-Animated Timeline Architecture */
+        .timeline {
+            position: relative; max-width: 700px; margin: 40px auto 0 auto; padding: 20px 0;
+        }
+        .timeline::after {
+            content: ''; position: absolute; width: 1px; background-color: var(--primary); top: 0; bottom: 0; left: 50%; opacity: 0.25;
+        }
+        .timeline-item {
+            padding: 10px 40px; position: relative; background-color: inherit; width: 50%; text-align: right;
+            opacity: 0; transform: translateY(40px); transition: all 1s ease; /* Animation prep */
+        }
+        .timeline-item.left { left: 0; }
+        .timeline-item.right { left: 50%; text-align: left; }
+        .timeline-item::after {
+            content: ''; position: absolute; width: 10px; height: 10px; right: -5px; background-color: var(--bg);
+            border: 1px solid var(--primary); top: 15px; border-radius: 50%; z-index: 1;
+        }
+        .timeline-item.right::after { left: -5px; }
+        .timeline-date { font-family: 'Cormorant Garamond', serif; font-size: 1.5rem; color: var(--primary); margin-bottom: 5px; font-weight: 600;}
+        .timeline-title { font-size: 0.85rem; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 8px; font-weight: 400;}
         
-        /* Form Section */
+        /* Target state for Scroll Animation */
+        .timeline-item.visible { opacity: 1; transform: translateY(0); }
+
+        /* RSVP Form Card Styling */
         .rsvp-container {
-            background: white;
-            padding: 40px;
-            border-radius: 4px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
-            max-width: 500px;
-            margin: 0 auto;
+            background: white; padding: 50px 40px; border-radius: 2px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.02); max-width: 500px; margin: 0 auto;
         }
-        .form-group { text-align: left; margin-bottom: 20px; }
-        .form-group label { display: block; font-size: 0.9rem; margin-bottom: 5px; text-transform: uppercase; letter-spacing: 1px;}
-        input, select, textarea {
-            width: 100%; padding: 12px; border: 1px solid #ccc; border-radius: 4px; font-family: inherit; font-size: 1rem;
+        .form-group { text-align: left; margin-bottom: 25px; }
+        .form-group label { display: block; font-size: 0.8rem; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 1.5px;}
+        input, select {
+            width: 100%; padding: 14px; border: 1px solid #ddd; border-radius: 2px; font-family: inherit; font-size: 0.95rem; font-weight: 200; background: #fafafa; transition: 0.3s;
         }
-        input:focus, select:focus { outline: none; border-color: var(--primary); }
+        input:focus, select:focus { outline: none; border-color: var(--primary); background: white; }
         
         button {
-            background-color: var(--primary); color: white; border: none; padding: 15px 40px;
-            font-size: 1rem; uppercase; letter-spacing: 2px; border-radius: 4px; cursor: pointer; transition: 0.3s;
+            background-color: var(--primary); color: white; border: none; padding: 16px 50px;
+            font-size: 0.85rem; text-transform: uppercase; letter-spacing: 2px; border-radius: 2px; cursor: pointer; transition: 0.4s;
         }
-        button:hover { background-color: #435044; }
-        #successMessage { display: none; color: var(--primary); font-size: 1.2rem; margin-top: 20px; }
+        button:hover { background-color: #435044; letter-spacing: 3px; }
+        #successMessage { display: none; color: var(--primary); font-size: 1.3rem; font-family: 'Cormorant Garamond', serif; font-style: italic; margin-top: 20px; }
+
+        /* Responsive Breakpoint for Mobile View */
+        @media screen and (max-width: 600px) {
+            header h1 { font-size: 3.2rem; }
+            .countdown-container { gap: 15px; padding: 15px 25px; }
+            .countdown-num { font-size: 1.8rem; }
+            .timeline::after { left: 31px; }
+            .timeline-item { width: 100%; padding-left: 70px; padding-right: 25px; text-align: left !important; }
+            .timeline-item.right { left: 0%; }
+            .timeline-item::after { left: 26px !important; }
+        }
     </style>
 </head>
 <body>
 
     <header>
-        <h1>Alex & Taylor</h1>
+        <h1>Natasha & Patrick</h1>
         <p>Are Getting Married</p>
-        <p style="font-size: 1rem; margin-top: 15px;">October 10, 2026 • Big Sur, CA</p>
+        <p style="font-size: 0.9rem; letter-spacing: 2px; margin-top: -15px;">February 20, 2027 • Perth, Australia</p>
+
+        <div class="countdown-container">
+            <div class="countdown-item"><span class="countdown-num" id="days">00</span><span class="countdown-label">Days</span></div>
+            <div class="countdown-item"><span class="countdown-num" id="hours">00</span><span class="countdown-label">Hours</span></div>
+            <div class="countdown-item"><span class="countdown-num" id="minutes">00</span><span class="countdown-label">Mins</span></div>
+            <div class="countdown-item"><span class="countdown-num" id="seconds">00</span><span class="countdown-label">Secs</span></div>
+        </div>
     </header>
 
     <div class="section">
         <h2>The Details</h2>
-        <p>We can't wait to celebrate with you. The ceremony will begin at 4:00 PM at the Cliffside Gardens, followed by dinner, drinks, and dancing under the stars.</p>
+        <p class="section-subtitle">Join us for our special day</p>
+        <p style="max-width: 600px; margin: 0 auto; font-weight: 300;">
+            We can't wait to celebrate our wedding with you in Western Australia. The ceremony will begin promptly at 4:00 PM, followed by an evening of dining, toasts, and dancing under the stars.
+        </p>
     </div>
 
-    <div class="section" style="background-color: #f0ede9;">
+    <div class="section" style="background-color: var(--light-taupe); max-width: 100%;">
+        <h2>Our Story</h2>
+        <p class="section-subtitle">How we got here</p>
+        
+        <div class="timeline">
+            <div class="timeline-item left">
+                <div class="timeline-date">2021</div>
+                <div class="timeline-title">The First Meeting</div>
+                <p>A simple chance encounter that slowly turned into an unforgettable conversation, marking the beginning of everything.</p>
+            </div>
+            <div class="timeline-item right">
+                <div class="timeline-date">2023</div>
+                <div class="timeline-title">The First Adventure</div>
+                <p>Packing bags and exploring new horizons together. We realized home wasn’t a place, but a person.</p>
+            </div>
+            <div class="timeline-item left">
+                <div class="timeline-date">2025</div>
+                <div class="timeline-title">The Proposal</div>
+                <p>Surrounded by a scenic landscape, a simple question was asked, and a joyful 'Yes' locked in our forever.</p>
+            </div>
+            <div class="timeline-item right">
+                <div class="timeline-date">2027</div>
+                <div class="timeline-title">The Wedding Day</div>
+                <p>The beginning of our official chapter as husband and wife, celebrated alongside our favourite people.</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="section">
         <h2>RSVP</h2>
+        <p class="section-subtitle">Kindly reply by January 15, 2027</p>
         <div class="rsvp-container">
             <form id="rsvpForm">
                 <input type="text" id="honeypot" style="display:none !important" tabindex="-1" autocomplete="off">
                 
                 <div class="form-group">
                     <label for="name">Full Name</label>
-                    <input type="text" id="name" required placeholder="John Doe">
+                    <input type="text" id="name" required placeholder="Your Name">
                 </div>
                 
                 <div class="form-group">
@@ -94,24 +191,67 @@
                 
                 <div class="form-group">
                     <label for="dietary">Dietary Restrictions</label>
-                    <input type="text" id="dietary" placeholder="e.g., Vegetarian, none">
+                    <input type="text" id="dietary" placeholder="e.g., None, Vegetarian, Allergies">
                 </div>
                 
                 <button type="submit" id="submitBtn">Submit RSVP</button>
             </form>
-            <div id="successMessage">❤️ Thank you! Your RSVP has been received.</div>
+            <div id="successMessage">✨ Thank you! Your RSVP has been elegantly received.</div>
         </div>
     </div>
 
     <script>
-        // PASTE YOUR GOOGLE WEB APP URL HERE
-        const GOOGLE_API_URL = "https://script.google.com/macros/s/AKfycbz0ohe-Hvl6S4GxnalBgF3iV6CZXEP6yulFlDVdbB5dBXZfVXPNWvWtOx1YlVKfwE8lmw/exec";
+        // -----------------------------------------------------------------
+        // 1. CONFIGURATION: PASTE YOUR UNIQUE GOOGLE WEB APP URL HERE BELOW
+        // -----------------------------------------------------------------
+        const GOOGLE_API_URL = "YOUR_WEB_APP_URL_HERE";
 
+
+        // 2. LIVE COUNTDOWN TIMER LOGIC
+        const targetDate = new Date("February 20, 2027 16:00:00").getTime();
+
+        const countdownInterval = setInterval(() => {
+            const now = new Date().getTime();
+            const difference = targetDate - now;
+
+            if (difference < 0) {
+                clearInterval(countdownInterval);
+                document.querySelector(".countdown-container").innerHTML = "<p style='text-transform:uppercase; letter-spacing:2px;'>Today is the Day!</p>";
+                return;
+            }
+
+            const days = Math.floor(difference / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((difference % (1000 * 60)) / 1000);
+
+            document.getElementById("days").innerText = days < 10 ? "0" + days : days;
+            document.getElementById("hours").innerText = hours < 10 ? "0" + hours : hours;
+            document.getElementById("minutes").innerText = minutes < 10 ? "0" + minutes : minutes;
+            document.getElementById("seconds").innerText = seconds < 10 ? "0" + seconds : seconds;
+        }, 1000);
+
+
+        // 3. SCROLL TIMELINE ANIMATION (IntersectionObserver API)
+        const timelineItems = document.querySelectorAll('.timeline-item');
+        const observerOptions = { threshold: 0.15, rootMargin: "0px 0px -50px 0px" };
+
+        const timelineObserver = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    observer.unobserve(entry.target); // Animates once
+                }
+            });
+        }, observerOptions);
+
+        timelineItems.forEach(item => timelineObserver.observe(item));
+
+
+        // 4. RSVP FORM CONTROLLER (Asynchronous Fetch Pipeline)
         document.getElementById('rsvpForm').addEventListener('submit', async (e) => {
             e.preventDefault();
-            
-            // Honeypot check: if filled, drop execution silently (bot trigger)
-            if (document.getElementById('honeypot').value) return;
+            if (document.getElementById('honeypot').value) return; // Bot filter
 
             const submitBtn = document.getElementById('submitBtn');
             submitBtn.innerText = "Sending...";
@@ -124,7 +264,6 @@
             };
 
             try {
-                // Apps script handles plain text POST mapping to circumvent CORS preflight
                 const response = await fetch(GOOGLE_API_URL, {
                     method: 'POST',
                     body: JSON.stringify(payload),
@@ -136,13 +275,13 @@
                     document.getElementById('rsvpForm').style.display = 'none';
                     document.getElementById('successMessage').style.display = 'block';
                 } else {
-                    alert("Something went wrong. Please try again.");
+                    alert("Submission error. Please verify setup.");
                     submitBtn.disabled = false;
                     submitBtn.innerText = "Submit RSVP";
                 }
             } catch (error) {
                 console.error(error);
-                alert("Network error. Please try again later.");
+                alert("Network error. Please try again.");
                 submitBtn.disabled = false;
                 submitBtn.innerText = "Submit RSVP";
             }
