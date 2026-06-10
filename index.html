@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Our Wedding</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Montserrat:wght@300;400&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary: #5a6b5c; /* Sage Green */
+            --bg: #f9f8f6;      /* Warm White */
+            --text: #2c3e35;    /* Dark Slate */
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            text-align: center;
+        }
+        h1, h2, h3 { font-family: 'Cormorant Garamond', serif; font-weight: 400; }
+        
+        /* Hero Section */
+        header {
+            padding: 100px 20px;
+            background: linear-gradient(rgba(255,255,255,0.8), rgba(255,255,255,0.8)), url('https://images.unsplash.com/photo-1519741497674-611481863552?q=80&w=1200') no-repeat center center/cover;
+            border-bottom: 1px solid #e0dad3;
+        }
+        header h1 { font-size: 3.5rem; italic; margin-bottom: 10px; color: var(--primary); }
+        header p { font-size: 1.2rem; letter-spacing: 2px; text-transform: uppercase; }
+
+        /* Details Section */
+        .section { padding: 80px 20px; max-width: 800px; margin: 0 auto; }
+        .section h2 { font-size: 2.5rem; margin-bottom: 20px; color: var(--primary); }
+        
+        /* Form Section */
+        .rsvp-container {
+            background: white;
+            padding: 40px;
+            border-radius: 4px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            max-width: 500px;
+            margin: 0 auto;
+        }
+        .form-group { text-align: left; margin-bottom: 20px; }
+        .form-group label { display: block; font-size: 0.9rem; margin-bottom: 5px; text-transform: uppercase; letter-spacing: 1px;}
+        input, select, textarea {
+            width: 100%; padding: 12px; border: 1px solid #ccc; border-radius: 4px; font-family: inherit; font-size: 1rem;
+        }
+        input:focus, select:focus { outline: none; border-color: var(--primary); }
+        
+        button {
+            background-color: var(--primary); color: white; border: none; padding: 15px 40px;
+            font-size: 1rem; uppercase; letter-spacing: 2px; border-radius: 4px; cursor: pointer; transition: 0.3s;
+        }
+        button:hover { background-color: #435044; }
+        #successMessage { display: none; color: var(--primary); font-size: 1.2rem; margin-top: 20px; }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Alex & Taylor</h1>
+        <p>Are Getting Married</p>
+        <p style="font-size: 1rem; margin-top: 15px;">October 10, 2026 • Big Sur, CA</p>
+    </header>
+
+    <div class="section">
+        <h2>The Details</h2>
+        <p>We can't wait to celebrate with you. The ceremony will begin at 4:00 PM at the Cliffside Gardens, followed by dinner, drinks, and dancing under the stars.</p>
+    </div>
+
+    <div class="section" style="background-color: #f0ede9;">
+        <h2>RSVP</h2>
+        <div class="rsvp-container">
+            <form id="rsvpForm">
+                <input type="text" id="honeypot" style="display:none !important" tabindex="-1" autocomplete="off">
+                
+                <div class="form-group">
+                    <label for="name">Full Name</label>
+                    <input type="text" id="name" required placeholder="John Doe">
+                </div>
+                
+                <div class="form-group">
+                    <label for="attending">Will you attend?</label>
+                    <select id="attending" required>
+                        <option value="" disabled selected>Select an option</option>
+                        <option value="Yes">Joyfully Accepts</option>
+                        <option value="No">Regretfully Declines</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="dietary">Dietary Restrictions</label>
+                    <input type="text" id="dietary" placeholder="e.g., Vegetarian, none">
+                </div>
+                
+                <button type="submit" id="submitBtn">Submit RSVP</button>
+            </form>
+            <div id="successMessage">❤️ Thank you! Your RSVP has been received.</div>
+        </div>
+    </div>
+
+    <script>
+        // PASTE YOUR GOOGLE WEB APP URL HERE
+        const GOOGLE_API_URL = "https://script.google.com/macros/s/AKfycbz0ohe-Hvl6S4GxnalBgF3iV6CZXEP6yulFlDVdbB5dBXZfVXPNWvWtOx1YlVKfwE8lmw/exec";
+
+        document.getElementById('rsvpForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            // Honeypot check: if filled, drop execution silently (bot trigger)
+            if (document.getElementById('honeypot').value) return;
+
+            const submitBtn = document.getElementById('submitBtn');
+            submitBtn.innerText = "Sending...";
+            submitBtn.disabled = true;
+
+            const payload = {
+                name: document.getElementById('name').value,
+                attending: document.getElementById('attending').value,
+                dietary: document.getElementById('dietary').value || "None"
+            };
+
+            try {
+                // Apps script handles plain text POST mapping to circumvent CORS preflight
+                const response = await fetch(GOOGLE_API_URL, {
+                    method: 'POST',
+                    body: JSON.stringify(payload),
+                    headers: { 'Content-Type': 'text/plain;charset=utf-8' }
+                });
+                
+                const result = await response.json();
+                if (result.result === 'success') {
+                    document.getElementById('rsvpForm').style.display = 'none';
+                    document.getElementById('successMessage').style.display = 'block';
+                } else {
+                    alert("Something went wrong. Please try again.");
+                    submitBtn.disabled = false;
+                    submitBtn.innerText = "Submit RSVP";
+                }
+            } catch (error) {
+                console.error(error);
+                alert("Network error. Please try again later.");
+                submitBtn.disabled = false;
+                submitBtn.innerText = "Submit RSVP";
+            }
+        });
+    </script>
+</body>
+</html>
