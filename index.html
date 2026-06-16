@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Natasha & Patrick's Wedding</title>
-    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,400&family=Montserrat:wght@200;300;400&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,400&family=Montserrat:wght=200;300;400&display=swap" rel="stylesheet">
     
     <style>
         :root {
@@ -32,10 +32,11 @@
             justify-content: center;
             align-items: center;
             padding: 20px;
-            /* CHANGED: Points to your new local repository hero image */
             background: linear-gradient(rgba(249, 248, 246, 0.45), rgba(249, 248, 246, 0.45)), 
                         url('hero.jpeg') no-repeat center center/cover;
             background-attachment: fixed;
+            /* Keeps your faces in frame on desktop browsers */
+            background-position: center 25%; 
         }
         header h1 { font-size: 4.5rem; color: var(--primary); margin-bottom: 10px; }
         header p { font-size: 1.1rem; letter-spacing: 4px; text-transform: uppercase; margin-bottom: 30px; }
@@ -61,32 +62,43 @@
         }
         .section-subtitle { font-style: italic; font-family: 'Cormorant Garamond', serif; font-size: 1.3rem; margin-bottom: 40px; opacity: 0.8;}
 
-        /* Timeline Styling */
-        .timeline { position: relative; max-width: 750px; margin: 40px auto 0 auto; padding: 20px 0; }
+        /* Side-by-Side Timeline Layout */
+        .timeline { position: relative; max-width: 950px; margin: 60px auto 0 auto; padding: 20px 0; }
         .timeline::after { content: ''; position: absolute; width: 1px; background-color: var(--primary); top: 0; bottom: 0; left: 50%; opacity: 0.25; }
-        .timeline-item {
-            padding: 20px 40px; position: relative; background-color: inherit; width: 50%; text-align: right;
+        
+        .timeline-block {
+            display: flex; position: relative; margin-bottom: 80px; width: 100%; align-items: center;
             opacity: 0; transform: translateY(40px); transition: all 1s ease;
         }
-        .timeline-item.left { left: 0; }
-        .timeline-item.right { left: 50%; text-align: left; }
-        .timeline-item::after {
-            content: ''; position: absolute; width: 10px; height: 10px; right: -5px; background-color: var(--bg);
-            border: 1px solid var(--primary); top: 25px; border-radius: 50%; z-index: 1;
+        .timeline-block.visible { opacity: 1; transform: translateY(0); }
+
+        .timeline-block::after {
+            content: ''; position: absolute; width: 10px; height: 10px; left: 50%; background-color: var(--bg);
+            border: 1px solid var(--primary); top: 25px; margin-left: -5px; border-radius: 50%; z-index: 1;
         }
-        .timeline-item.right::after { left: -5px; }
+
+        .timeline-text-side, .timeline-img-side { width: 50%; padding: 0 45px; }
+        .timeline-text-side { text-align: right; }
+        .timeline-block.right-story { flex-direction: row-reverse; }
+        .timeline-block.right-story .timeline-text-side { text-align: left; }
+
         .timeline-date { font-family: 'Cormorant Garamond', serif; font-size: 1.6rem; color: var(--primary); margin-bottom: 5px; font-weight: 600;}
         .timeline-title { font-size: 0.9rem; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 8px; font-weight: 400; color: #435044;}
-        .timeline-item.visible { opacity: 1; transform: translateY(0); }
-
-        /* NEW: Added styling for images inside timeline */
+        
+        /* UPDATED: Flexible image frame to stop harsh cropping on wide computer layouts */
+        .timeline-img-container { 
+            width: 100%; 
+            max-height: 360px; 
+            overflow: hidden; 
+            border-radius: 3px; 
+            box-shadow: 0 4px 20px rgba(0,0,0,0.06); 
+        }
         .timeline-img {
             width: 100%;
-            max-height: 220px;
+            height: 100%;
             object-fit: cover;
-            border-radius: 2px;
-            margin-top: 15px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            /* Focuses on the upper third where eyes and faces usually align */
+            object-position: center 30%; 
         }
 
         /* Form Styling */
@@ -114,14 +126,18 @@
         .secondary-btn { background-color: transparent; color: var(--primary); border: 1px solid var(--primary); margin-top: 25px; }
         .secondary-btn:hover { background-color: var(--light-taupe); color: #435044; }
 
-        @media screen and (max-width: 600px) {
+        /* Smooth fallback layout for smaller screens */
+        @media screen and (max-width: 768px) {
             header h1 { font-size: 3.2rem; }
             .countdown-container { gap: 15px; padding: 15px 25px; }
             .countdown-num { font-size: 1.8rem; }
-            .timeline::after { left: 31px; }
-            .timeline-item { width: 100%; padding-left: 70px; padding-right: 25px; text-align: left !important; }
-            .timeline-item.right { left: 0%; }
-            .timeline-item::after { left: 26px !important; }
+            
+            .timeline::after { left: 20px; }
+            .timeline-block { flex-direction: column !important; margin-bottom: 40px; }
+            .timeline-block::after { left: 20px; margin-left: -5px; top: 25px; }
+            
+            .timeline-text-side, .timeline-img-side { width: 100%; padding-left: 45px; padding-right: 15px; text-align: left !important; }
+            .timeline-img-container { max-height: 260px; margin-top: 15px; }
         }
     </style>
 </head>
@@ -153,36 +169,72 @@
         <p class="section-subtitle">A collection of calculated risks, minor medical emergencies, and street furniture</p>
         
         <div class="timeline">
-            <div class="timeline-item left">
-                <div class="timeline-date">2024</div>
-                <div class="timeline-title">The "Forced" First Date</div>
-                <p>After connecting on Hinge, Natasha successfully convinced Patrick that a weekend date was already scheduled (definitely was not!) She then turned up fashionably late. But despite the trickery, a great stroll around the lake left them both eager for more. Natasha claimed she was busy and wouldn't be able to see Patrick for at least a week, only to invite Patrick out again literally 24 hours later. They haven't stopped hanging out since, sharing massive, side-splitting laughs whenever they're around each other.</p>
-                <img src="story1.jpeg" alt="First Date" class="timeline-img">
+            
+            <div class="timeline-block">
+                <div class="timeline-text-side">
+                    <div class="timeline-date">2024</div>
+                    <div class="timeline-title">The "Forced" First Date</div>
+                    <p>After connecting on Hinge, Natasha successfully convinced Patrick that a weekend date was already scheduled (definitely was not!) She then turned up fashionably late. But despite the trickery, a great stroll around the lake left them both eager for more. Natasha claimed she was busy and wouldn't be able to see Patrick for at least a week, only to invite Patrick out again literally 24 hours later. They haven't stopped hanging out since, sharing massive, side-splitting laughs whenever they're around each other.</p>
+                </div>
+                <div class="timeline-img-side">
+                    <div class="timeline-img-container">
+                        <img src="story1.jpeg" alt="First Date" class="timeline-img">
+                    </div>
+                </div>
             </div>
-            <div class="timeline-item right">
-                <div class="timeline-date">2024 (Slight Detour)</div>
-                <div class="timeline-title">The 4th Date Incident & Humanization</div>
-                <p>Natasha proposed a low-stakes intro to Patrick's family. Watch him and his sister play tennis, then have Patrick cook dinner for them all. A sweet idea, but Patricks body had other ideas. After maybe a little too much exertion (trying to impress her?) Patrick spent the entire night violently vomiting, leaving Natasha to bond with his sister to a chaotic soundtrack. Undeterred, Natasha returned to the fmaily home again and was won over by their loving charm. She then took on her greatest challenge: turning Patrick from an alien into a... slightly more normal human. Successfully initiating his social skills training, which included teaching him how to drink coffee and properly brew tea (for her).</p>
-                <img src="story2.jpeg" alt="The Tennis Incident" class="timeline-img">
+
+            <div class="timeline-block right-story">
+                <div class="timeline-text-side">
+                    <div class="timeline-date">2024 (Slight Detour)</div>
+                    <div class="timeline-title">The 4th Date Incident & Humanization</div>
+                    <p>Natasha proposed a low-stakes intro to Patrick's family. Watch him and his sister play tennis, then have Patrick cook dinner for them all. A sweet idea, but Patricks body had other ideas. After maybe a little too much exertion (trying to impress her?) Patrick spent the entire night violently vomiting, leaving Natasha to bond with his sister to a chaotic soundtrack. Undeterred, Natasha returned to the fmaily home again and was won over by their loving charm. She then took on her greatest challenge: turning Patrick from an alien into a... slightly more normal human. Successfully initiating his social skills training, which included teaching him how to drink coffee and properly brew tea (for her).</p>
+                </div>
+                <div class="timeline-img-side">
+                    <div class="timeline-img-container">
+                        <img src="story2.jpeg" alt="The Tennis Incident" class="timeline-img">
+                    </div>
+                </div>
             </div>
-            <div class="timeline-item left">
-                <div class="timeline-date">2025</div>
-                <div class="timeline-title">The Melbourne Era</div>
-                <p>Up for an adventure (for 1-3 years), they packed up and moved to Melbourne. While Natasha absolutely tore shizz up at work, thriving and tackling all the hard stuff, Patrick embraced his destiny as the ideal house-husband. Together, they proudly furnished their apartment entirely with premium treasures found discarded on the street, building a beautiful home and beginning their transition toward something more meaningful.</p>
-                <img src="story3.jpeg" alt="The Melbourne Era" class="timeline-img">
+
+            <div class="timeline-block">
+                <div class="timeline-text-side">
+                    <div class="timeline-date">2025</div>
+                    <div class="timeline-title">The Melbourne Era</div>
+                    <p>Up for an adventure (for 1-3 years), they packed up and moved to Melbourne. While Natasha absolutely tore shizz up at work, thriving and tackling all the hard stuff, Patrick embraced his destiny as the ideal house-husband. Together, they proudly furnished their apartment entirely with premium treasures found discarded on the street, building a beautiful home and beginning their transition toward something more meaningful.</p>
+                </div>
+                <div class="timeline-img-side">
+                    <div class="timeline-img-container">
+                        <img src="story3.jpeg" alt="The Melbourne Era" class="timeline-img">
+                    </div>
+                </div>
             </div>
-            <div class="timeline-item right">
-                <div class="timeline-date">2026</div>
-                <div class="timeline-title">The Beach Proposal</div>
-                <p>On a rare sunny Melbourne day, Patrick hijacked a casual beach walk to pop the question. Right in the after of being lambasted for his lack of PhD progress—and amidst Natasha’s sheer despair that it would ever be finished—Patrick pulled out a ring. Under an ominous cliff overhang and just moments before they ran into a whole group of nude men letting it all hang out. She, of course, said yes!</p>
-                <img src="story4.jpeg" alt="The Beach Proposal" class="timeline-img">
+
+            <div class="timeline-block right-story">
+                <div class="timeline-text-side">
+                    <div class="timeline-date">2026</div>
+                    <div class="timeline-title">The Beach Proposal</div>
+                    <p>On a rare sunny Melbourne day, Patrick hijacked a casual beach walk to pop the question. Right in the after of being lambasted for his lack of PhD progress—and amidst Natasha’s sheer despair that it would ever be finished—Patrick pulled out a ring. Under an ominous cliff overhang and just moments before they ran into a whole group of nude men letting it all hang out. She, of course, said yes!</p>
+                </div>
+                <div class="timeline-img-side">
+                    <div class="timeline-img-container">
+                        <img src="story4.jpeg" alt="The Beach Proposal" class="timeline-img">
+                    </div>
+                </div>
             </div>
-            <div class="timeline-item left">
-                <div class="timeline-date">The Future</div>
-                <div class="timeline-title">The Next Chapter</div>
-                <p>With a wedding on the horizon, we are looking to move back to our roots. Natasha is set to ascend even further into her career, while Patrick continues to hone his skills in homemaking... and who knows, maybe even money-making too!</p>
-                <img src="story5.jpeg" alt="The Future" class="timeline-img">
+
+            <div class="timeline-block">
+                <div class="timeline-text-side">
+                    <div class="timeline-date">The Future</div>
+                    <div class="timeline-title">The Next Chapter</div>
+                    <p>With a wedding on the horizon, we are looking to move back to our roots. Natasha is set to ascend even further into her career, while Patrick continues to hone his skills in homemaking... and who knows, maybe even money-making too!</p>
+                </div>
+                <div class="timeline-img-side">
+                    <div class="timeline-img-container">
+                        <img src="story5.jpeg" alt="The Future" class="timeline-img">
+                    </div>
+                </div>
             </div>
+
         </div>
     </div>
 
@@ -261,7 +313,7 @@
         }, 1000);
 
         // SCROLL TIMELINE ANIMATION
-        const timelineItems = document.querySelectorAll('.timeline-item');
+        const timelineBlocks = document.querySelectorAll('.timeline-block');
         const observerOptions = { threshold: 0.15, rootMargin: "0px 0px -50px 0px" };
         const timelineObserver = new IntersectionObserver((entries, observer) => {
             entries.forEach(entry => {
@@ -271,7 +323,7 @@
                 }
             });
         }, observerOptions);
-        timelineItems.forEach(item => timelineObserver.observe(item));
+        timelineBlocks.forEach(item => timelineObserver.observe(item));
 
         // RSVP FORM CONTROLLER
         const rsvpForm = document.getElementById('rsvpForm');
