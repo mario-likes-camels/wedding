@@ -35,7 +35,8 @@
             background: linear-gradient(rgba(249, 248, 246, 0.45), rgba(249, 248, 246, 0.45)), 
                         url('hero.jpeg') no-repeat center center/cover;
             background-attachment: fixed;
-            background-position: center 25%; 
+            /* CHANGED: Adjusted focus downward for desktop viewports */
+            background-position: center 40%; 
         }
         header h1 { font-size: 4.5rem; color: var(--primary); margin-bottom: 10px; z-index: 2; }
         header p { font-size: 1.1rem; letter-spacing: 4px; text-transform: uppercase; margin-bottom: 30px; z-index: 2; }
@@ -98,22 +99,22 @@
             object-fit: cover;
         }
 
-        /* CUSTOM IMAGE FRAMING RULES */
-        /* Story 1: Faces near bottom, crop top */
-        .img-story1 { object-position: center 85%; }
+        /* CUSTOM IMAGE FRAMING RULES (FORCED RADICALLY TO THE BOTTOM) */
+        /* Story 1: Pushed deep to show faces at the bottom */
+        .img-story1 { object-position: center 95%; }
         
-        /* Story 2: Needs more bottom visible */
-        .img-story2 { object-position: center 80%; }
+        /* Story 2: Pushed deep down to show more bottom */
+        .img-story2 { object-position: center 95%; }
         
-        /* Story 4 (Now Block 3): Default balanced center focus */
-        .img-story4 { object-position: center center; }
+        /* Story 4: Balanced central-low split */
+        .img-story4 { object-position: center 65%; }
 
-        /* Story 3 (Now Block 4): Crop top, show more bottom */
-        .img-story3 { object-position: center 80%; }
+        /* Story 3: Pushed deep down to show more bottom */
+        .img-story3 { object-position: center 95%; }
         
-        /* Story 5: Taller container allowance to show almost full size, focusing low */
+        /* Story 5: Taller display frame anchoring to the baseline absolute bottom */
         .container-story5 { max-height: 500px !important; }
-        .img-story5 { object-position: center 85%; }
+        .img-story5 { object-position: center 100%; }
 
 
         /* Form Styling */
@@ -144,9 +145,9 @@
         /* Smooth fallback layout for smaller screens */
         @media screen and (max-width: 768px) {
             header {
-                /* Zooms slightly into the hero file on small display environments */
-                background-size: 115% auto;
-                background-position: center 20%;
+                /* Zooms and pushes focus down slightly on mobile screens */
+                background-size: 125% auto;
+                background-position: center 35%;
             }
             header h1 { font-size: 3.2rem; }
             .countdown-container { gap: 15px; padding: 15px 25px; }
