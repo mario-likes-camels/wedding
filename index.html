@@ -35,11 +35,11 @@
             background: linear-gradient(rgba(249, 248, 246, 0.45), rgba(249, 248, 246, 0.45)), 
                         url('hero.jpeg') no-repeat center center/cover;
             background-attachment: fixed;
-            /* Keeps your faces in frame on desktop browsers */
             background-position: center 25%; 
         }
-        header h1 { font-size: 4.5rem; color: var(--primary); margin-bottom: 10px; }
-        header p { font-size: 1.1rem; letter-spacing: 4px; text-transform: uppercase; margin-bottom: 30px; }
+        header h1 { font-size: 4.5rem; color: var(--primary); margin-bottom: 10px; z-index: 2; }
+        header p { font-size: 1.1rem; letter-spacing: 4px; text-transform: uppercase; margin-bottom: 30px; z-index: 2; }
+        .countdown-container { z-index: 2; }
 
         .countdown-container {
             display: flex;
@@ -85,7 +85,6 @@
         .timeline-date { font-family: 'Cormorant Garamond', serif; font-size: 1.6rem; color: var(--primary); margin-bottom: 5px; font-weight: 600;}
         .timeline-title { font-size: 0.9rem; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 8px; font-weight: 400; color: #435044;}
         
-        /* UPDATED: Flexible image frame to stop harsh cropping on wide computer layouts */
         .timeline-img-container { 
             width: 100%; 
             max-height: 360px; 
@@ -97,9 +96,25 @@
             width: 100%;
             height: 100%;
             object-fit: cover;
-            /* Focuses on the upper third where eyes and faces usually align */
-            object-position: center 30%; 
         }
+
+        /* CUSTOM IMAGE FRAMING RULES */
+        /* Story 1: Faces near bottom, crop top */
+        .img-story1 { object-position: center 85%; }
+        
+        /* Story 2: Needs more bottom visible */
+        .img-story2 { object-position: center 80%; }
+        
+        /* Story 4 (Now Block 3): Default balanced center focus */
+        .img-story4 { object-position: center center; }
+
+        /* Story 3 (Now Block 4): Crop top, show more bottom */
+        .img-story3 { object-position: center 80%; }
+        
+        /* Story 5: Taller container allowance to show almost full size, focusing low */
+        .container-story5 { max-height: 500px !important; }
+        .img-story5 { object-position: center 85%; }
+
 
         /* Form Styling */
         .rsvp-container {
@@ -128,6 +143,11 @@
 
         /* Smooth fallback layout for smaller screens */
         @media screen and (max-width: 768px) {
+            header {
+                /* Zooms slightly into the hero file on small display environments */
+                background-size: 115% auto;
+                background-position: center 20%;
+            }
             header h1 { font-size: 3.2rem; }
             .countdown-container { gap: 15px; padding: 15px 25px; }
             .countdown-num { font-size: 1.8rem; }
@@ -137,7 +157,8 @@
             .timeline-block::after { left: 20px; margin-left: -5px; top: 25px; }
             
             .timeline-text-side, .timeline-img-side { width: 100%; padding-left: 45px; padding-right: 15px; text-align: left !important; }
-            .timeline-img-container { max-height: 260px; margin-top: 15px; }
+            .timeline-img-container { max-height: 280px; margin-top: 15px; }
+            .container-story5 { max-height: 380px !important; }
         }
     </style>
 </head>
@@ -178,7 +199,7 @@
                 </div>
                 <div class="timeline-img-side">
                     <div class="timeline-img-container">
-                        <img src="story1.jpeg" alt="First Date" class="timeline-img">
+                        <img src="story1.jpeg" alt="First Date" class="timeline-img img-story1">
                     </div>
                 </div>
             </div>
@@ -191,25 +212,12 @@
                 </div>
                 <div class="timeline-img-side">
                     <div class="timeline-img-container">
-                        <img src="story2.jpeg" alt="The Tennis Incident" class="timeline-img">
+                        <img src="story2.jpeg" alt="The Tennis Incident" class="timeline-img img-story2">
                     </div>
                 </div>
             </div>
 
             <div class="timeline-block">
-                <div class="timeline-text-side">
-                    <div class="timeline-date">2025</div>
-                    <div class="timeline-title">The Melbourne Era</div>
-                    <p>Up for an adventure (for 1-3 years), they packed up and moved to Melbourne. While Natasha absolutely tore shizz up at work, thriving and tackling all the hard stuff, Patrick embraced his destiny as the ideal house-husband. Together, they proudly furnished their apartment entirely with premium treasures found discarded on the street, building a beautiful home and beginning their transition toward something more meaningful.</p>
-                </div>
-                <div class="timeline-img-side">
-                    <div class="timeline-img-container">
-                        <img src="story3.jpeg" alt="The Melbourne Era" class="timeline-img">
-                    </div>
-                </div>
-            </div>
-
-            <div class="timeline-block right-story">
                 <div class="timeline-text-side">
                     <div class="timeline-date">2026</div>
                     <div class="timeline-title">The Beach Proposal</div>
@@ -217,7 +225,20 @@
                 </div>
                 <div class="timeline-img-side">
                     <div class="timeline-img-container">
-                        <img src="story4.jpeg" alt="The Beach Proposal" class="timeline-img">
+                        <img src="story4.jpeg" alt="The Beach Proposal" class="timeline-img img-story4">
+                    </div>
+                </div>
+            </div>
+
+            <div class="timeline-block right-story">
+                <div class="timeline-text-side">
+                    <div class="timeline-date">2025</div>
+                    <div class="timeline-title">The Melbourne Era</div>
+                    <p>Up for an adventure (for 1-3 years), they packed up and moved to Melbourne. While Natasha absolutely tore shizz up at work, thriving and tackling all the hard stuff, Patrick embraced his destiny as the ideal house-husband. Together, they proudly furnished their apartment entirely with premium treasures found discarded on the street, building a beautiful home and beginning their transition toward something more meaningful.</p>
+                </div>
+                <div class="timeline-img-side">
+                    <div class="timeline-img-container">
+                        <img src="story3.jpeg" alt="The Melbourne Era" class="timeline-img img-story3">
                     </div>
                 </div>
             </div>
@@ -229,8 +250,8 @@
                     <p>With a wedding on the horizon, we are looking to move back to our roots. Natasha is set to ascend even further into her career, while Patrick continues to hone his skills in homemaking... and who knows, maybe even money-making too!</p>
                 </div>
                 <div class="timeline-img-side">
-                    <div class="timeline-img-container">
-                        <img src="story5.jpeg" alt="The Future" class="timeline-img">
+                    <div class="timeline-img-container container-story5">
+                        <img src="story5.jpeg" alt="The Future" class="timeline-img img-story5">
                     </div>
                 </div>
             </div>
