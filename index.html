@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Natasha & Patrick's Wedding</title>
-    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,400&family=Montserrat:wght=200;300;400&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght=0,300;0,400;0,600;1,400&family=Montserrat:wght=200;300;400&display=swap" rel="stylesheet">
     
     <style>
         :root {
@@ -87,7 +87,7 @@
         
         .timeline-img-container { 
             width: 100%; 
-            max-height: 360px; 
+            max-height: 520px; /* INCREASED from 360px: Gives the crop frame vertical breathing room to show the absolute bottom of your images */
             overflow: hidden; 
             border-radius: 3px; 
             box-shadow: 0 4px 20px rgba(0,0,0,0.06); 
@@ -112,7 +112,7 @@
         .img-story4 { object-position: center bottom; }
         
         /* Story 5: Taller container threshold focusing exclusively on the bottom aspect */
-        .container-story5 { max-height: 500px !important; }
+        .container-story5 { max-height: 600px !important; } /* INCREASED from 500px */
         .img-story5 { object-position: center bottom; }
 
 
@@ -144,7 +144,6 @@
         /* Smooth fallback layout for smaller screens */
         @media screen and (max-width: 768px) {
             header {
-                /* Zooms slightly into the hero file on small display environments */
                 background-size: 115% auto;
                 background-position: center 20%;
             }
@@ -157,8 +156,8 @@
             .timeline-block::after { left: 20px; margin-left: -5px; top: 25px; }
             
             .timeline-text-side, .timeline-img-side { width: 100%; padding-left: 45px; padding-right: 15px; text-align: left !important; }
-            .timeline-img-container { max-height: 280px; margin-top: 15px; }
-            .container-story5 { max-height: 380px !important; }
+            .timeline-img-container { max-height: 420px; margin-top: 15px; } /* INCREASED from 280px for mobile room */
+            .container-story5 { max-height: 480px !important; } /* INCREASED from 380px */
         }
     </style>
 </head>
