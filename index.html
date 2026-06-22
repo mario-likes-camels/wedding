@@ -99,21 +99,21 @@
         }
 
         /* CUSTOM IMAGE FRAMING RULES */
-        /* Story 1: Faces near bottom, crop top */
-        .img-story1 { object-position: center 85%; }
+        /* Story 1: Cuts out the top third, displays the bottom portion */
+        .img-story1 { object-position: center bottom; }
         
-        /* Story 2: Needs more bottom visible */
-        .img-story2 { object-position: center 80%; }
+        /* Story 2: Maximizes bottom visibility */
+        .img-story2 { object-position: center bottom; }
         
-        /* Story 4 (Now Block 3): Default balanced center focus */
-        .img-story4 { object-position: center center; }
+        /* Story 3: Clean, uncropped centered baseline fit */
+        .img-story3 { object-position: center center; }
 
-        /* Story 3 (Now Block 4): Crop top, show more bottom */
-        .img-story3 { object-position: center 80%; }
+        /* Story 4: Cuts out the top third, displays the bottom portion */
+        .img-story4 { object-position: center bottom; }
         
-        /* Story 5: Taller container allowance to show almost full size, focusing low */
+        /* Story 5: Taller container threshold focusing exclusively on the bottom aspect */
         .container-story5 { max-height: 500px !important; }
-        .img-story5 { object-position: center 85%; }
+        .img-story5 { object-position: center bottom; }
 
 
         /* Form Styling */
