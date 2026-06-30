@@ -21,6 +21,11 @@
             line-height: 1.8;
             text-align: center;
             overflow-x: hidden;
+            padding-bottom: 0;
+            transition: padding-bottom 0.3s ease;
+        }
+        body.admin-open {
+            padding-bottom: 180px; /* Gives space so the tray doesn't block content */
         }
         h1, h2, h3 { font-family: 'Cormorant Garamond', serif; font-weight: 300; letter-spacing: 1px; }
         p { font-weight: 300; font-size: 0.95rem; }
@@ -33,7 +38,6 @@
             align-items: center;
             padding: 20px;
             background: linear-gradient(rgba(249, 248, 246, 0.45), rgba(249, 248, 246, 0.45)), 
-                        /* url('hero.jpeg') no-repeat center center/cover; */
                         url('no_water_mark.jpeg') no-repeat center center/cover;
             background-attachment: fixed;
             background-position: center 25%; 
@@ -88,10 +92,11 @@
         
         .timeline-img-container { 
             width: 100%; 
-            max-height: 520px; /* INCREASED from 360px: Gives the crop frame vertical breathing room to show the absolute bottom of your images */
+            max-height: 520px; 
             overflow: hidden; 
             border-radius: 3px; 
             box-shadow: 0 4px 20px rgba(0,0,0,0.06); 
+            transition: outline 0.2s ease, transform 0.2s ease;
         }
         .timeline-img {
             width: 100%;
@@ -99,23 +104,20 @@
             object-fit: cover;
         }
 
+        /* Drag and Drop Engine Highlights */
+        .timeline-img-container.drag-over {
+            outline: 4px dashed var(--primary);
+            outline-offset: -4px;
+            transform: scale(0.98);
+        }
+
         /* CUSTOM IMAGE FRAMING RULES */
-        /* Story 1: Cuts out the top third, displays the bottom portion */
         .img-story1 { object-position: center bottom; }
-        
-        /* Story 2: Maximizes bottom visibility */
         .img-story2 { object-position: center bottom; }
-        
-        /* Story 3: Clean, uncropped centered baseline fit */
         .img-story3 { object-position: center center; }
-
-        /* Story 4: Cuts out the top third, displays the bottom portion */
         .img-story4 { object-position: center bottom; }
-        
-        /* Story 5: Taller container threshold focusing exclusively on the bottom aspect */
-        .container-story5 { max-height: 600px !important; } /* INCREASED from 500px */
+        .container-story5 { max-height: 600px !important; } 
         .img-story5 { object-position: center bottom; }
-
 
         /* Form Styling */
         .rsvp-container {
@@ -142,12 +144,46 @@
         .secondary-btn { background-color: transparent; color: var(--primary); border: 1px solid var(--primary); margin-top: 25px; }
         .secondary-btn:hover { background-color: var(--light-taupe); color: #435044; }
 
+        /* Navigation Version Pickers Styling */
+        .top-nav-switcher {
+            position: fixed; top: 0; left: 0; right: 0; height: 45px;
+            background: rgba(249, 248, 246, 0.95); backdrop-filter: blur(5px);
+            z-index: 10000; border-bottom: 1px solid rgba(90, 107, 92, 0.15);
+            display: flex; justify-content: center; align-items: center; gap: 15px;
+        }
+        .nav-btn {
+            font-family: 'Montserrat', sans-serif; font-size: 0.75rem; text-transform: uppercase;
+            letter-spacing: 1px; color: var(--text); text-decoration: none; padding: 5px 10px;
+            border-radius: 2px; transition: all 0.3s ease; border: 1px solid transparent;
+        }
+        .nav-btn:hover, .nav-btn.active {
+            border-color: var(--primary); color: var(--primary); background: rgba(255,255,255,0.6);
+        }
+
+        /* Bottom Drag & Drop Studio Panel */
+        .design-tray {
+            position: fixed; bottom: -200px; left: 0; right: 0; height: 165px;
+            background: white; border-top: 2px solid var(--primary); z-index: 99999;
+            box-shadow: 0 -5px 25px rgba(0,0,0,0.1); padding: 15px 20px;
+            display: flex; flex-direction: column; gap: 10px; transition: bottom 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .design-tray.open { bottom: 0; }
+        .tray-scroll-container {
+            display: flex; gap: 15px; overflow-x: auto; padding-bottom: 8px; text-align: left;
+        }
+        .tray-item-group { display: flex; flex-direction: column; gap: 4px; }
+        .tray-group-label { font-size: 0.65rem; text-transform: uppercase; letter-spacing: 1px; opacity: 0.6; font-weight: bold; }
+        .tray-images { display: flex; gap: 8px; }
+        .draggable-thumb {
+            width: 75px; height: 75px; object-fit: cover; border-radius: 2px;
+            cursor: grab; border: 1px solid #ddd; transition: transform 0.2s;
+        }
+        .draggable-thumb:active { cursor: grabbing; }
+        .draggable-thumb:hover { transform: scale(1.05); border-color: var(--primary); }
+
         /* Smooth fallback layout for smaller screens */
         @media screen and (max-width: 768px) {
-            header {
-                background-size: 115% auto;
-                background-position: center 20%;
-            }
+            header { background-size: 115% auto; background-position: center 20%; }
             header h1 { font-size: 3.2rem; }
             .countdown-container { gap: 15px; padding: 15px 25px; }
             .countdown-num { font-size: 1.8rem; }
@@ -157,14 +193,23 @@
             .timeline-block::after { left: 20px; margin-left: -5px; top: 25px; }
             
             .timeline-text-side, .timeline-img-side { width: 100%; padding-left: 45px; padding-right: 15px; text-align: left !important; }
-            .timeline-img-container { max-height: 420px; margin-top: 15px; } /* INCREASED from 280px for mobile room */
-            .container-story5 { max-height: 480px !important; } /* INCREASED from 380px */
+            .timeline-img-container { max-height: 420px; margin-top: 15px; } 
+            .container-story5 { max-height: 480px !important; } 
+            .design-tray { height: 210px; bottom: -250px; }
+            body.admin-open { padding-bottom: 220px; }
         }
     </style>
 </head>
 <body>
 
-    <header>
+    <nav class="top-nav-switcher">
+        <a href="?" id="btn-default" class="nav-btn">Standard Color</a>
+        <a href="?v=bw" id="btn-bw" class="nav-btn">Black & White</a>
+        <a href="?v=anim" id="btn-anim" class="nav-btn">Animated</a>
+        <a href="#" id="btn-custom" class="nav-btn" onclick="openDesignStudio(event)">🎨 Custom Studio</a>
+    </nav>
+
+    <header style="margin-top: 45px;">
         <h1>Natasha & Patrick</h1>
         <p>Are Getting Married</p>
         <p style="font-size: 0.9rem; letter-spacing: 2px; margin-top: -15px;">February 20, 2027 • Perth, Australia</p>
@@ -199,8 +244,7 @@
                 </div>
                 <div class="timeline-img-side">
                     <div class="timeline-img-container">
-                        <!img src="story1.jpeg" alt="First Date" class="timeline-img img-story1">
-                        <img src="Forced?.jpeg" data-story="1" alt="First Date" class="timeline-img img-story1">
+                        <img src="story1.jpeg" data-story="1" alt="First Date" class="timeline-img img-story1">
                     </div>
                 </div>
             </div>
@@ -213,7 +257,6 @@
                 </div>
                 <div class="timeline-img-side">
                     <div class="timeline-img-container">
-                        <!img src="story2.jpeg" alt="The Tennis Incident" class="timeline-img img-story2">
                         <img src="story2.jpeg" data-story="2" alt="The Tennis Incident" class="timeline-img img-story2">
                     </div>
                 </div>
@@ -227,7 +270,6 @@
                 </div>
                 <div class="timeline-img-side">
                     <div class="timeline-img-container">
-                        <!img src="story4.jpeg" alt="The Beach Proposal" class="timeline-img img-story4">
                         <img src="story4.jpeg" data-story="4" alt="The Beach Proposal" class="timeline-img img-story4">
                     </div>
                 </div>
@@ -241,7 +283,6 @@
                 </div>
                 <div class="timeline-img-side">
                     <div class="timeline-img-container">
-                        <!img src="story3.jpeg" alt="The Melbourne Era" class="timeline-img img-story3">
                         <img src="story3.jpeg" data-story="3" alt="The Melbourne Era" class="timeline-img img-story3">
                     </div>
                 </div>
@@ -255,9 +296,7 @@
                 </div>
                 <div class="timeline-img-side">
                     <div class="timeline-img-container container-story5">
-                        <!img src="story5.jpeg" alt="The Future" class="timeline-img img-story5">
-                        <!img src="story5.jpeg" data-story="5" alt="The Future" class="timeline-img img-story5">
-                        <img src="maze.jpeg" data-story="5" alt="The Future" class="timeline-img img-story5">
+                        <img src="story5.jpeg" data-story="5" alt="The Future" class="timeline-img img-story5">
                     </div>
                 </div>
             </div>
@@ -313,10 +352,47 @@
         </div>
     </div>
 
+    <div id="customStudioTray" class="design-tray">
+        <div style="font-size: 0.75rem; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; color: var(--primary); display: flex; justify-content: space-between;">
+            <span>✨ Custom Layout Engine: Drag and drop an asset over any timeline picture</span>
+            <span style="cursor: pointer; opacity: 0.6;" onclick="document.getElementById('customStudioTray').classList.remove('open'); document.body.classList.remove('admin-open');">✕ Close Studio</span>
+        </div>
+        <div class="tray-scroll-container">
+            <div class="tray-item-group">
+                <span class="tray-group-label">Color Set</span>
+                <div class="tray-images">
+                    <img src="story1.jpeg" draggable="true" class="draggable-thumb" title="Story 1 Original">
+                    <img src="story2.jpeg" draggable="true" class="draggable-thumb" title="Story 2 Original">
+                    <img src="story3.jpeg" draggable="true" class="draggable-thumb" title="Story 3 Original">
+                    <img src="story4.jpeg" draggable="true" class="draggable-thumb" title="Story 4 Original">
+                    <img src="story5.jpeg" draggable="true" class="draggable-thumb" title="Story 5 Original">
+                </div>
+            </div>
+            <div class="tray-item-group">
+                <span class="tray-group-label">B&W Set</span>
+                <div class="tray-images">
+                    <img src="bw1.jpeg" draggable="true" class="draggable-thumb" title="Story 1 B&W">
+                    <img src="bw2.jpeg" draggable="true" class="draggable-thumb" title="Story 2 B&W">
+                    <img src="bw3.jpeg" draggable="true" class="draggable-thumb" title="Story 3 B&W">
+                    <img src="bw4.jpeg" draggable="true" class="draggable-thumb" title="Story 4 B&W">
+                    <img src="bw5.jpeg" draggable="true" class="draggable-thumb" title="Story 5 B&W">
+                </div>
+            </div>
+            <div class="tray-item-group">
+                <span class="tray-group-label">Animated Set</span>
+                <div class="tray-images">
+                    <img src="anim1.gif" draggable="true" class="draggable-thumb" title="Story 1 Animation">
+                    <img src="anim2.gif" draggable="true" class="draggable-thumb" title="Story 2 Animation">
+                    <img src="anim3.gif" draggable="true" class="draggable-thumb" title="Story 3 Animation">
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script>
         const GOOGLE_API_URL = "https://script.google.com/macros/s/AKfycbxwRc4ATnnIxWUehP9ZV-B0tlRpyd7QE7RK4FcYSDMfZ6GzZa7q2eBXaRYXv43u0VZi2w/exec";
 
-        // LIVE COUNTDOWN TIMER LOGIC
+        // 1. LIVE COUNTDOWN TIMER LOGIC
         const targetDate = new Date("February 20, 2027 16:00:00").getTime();
         const countdownInterval = setInterval(() => {
             const now = new Date().getTime();
@@ -339,7 +415,7 @@
             document.getElementById("seconds").innerText = seconds < 10 ? "0" + seconds : seconds;
         }, 1000);
 
-        // SCROLL TIMELINE ANIMATION
+        // 2. SCROLL TIMELINE ANIMATION
         const timelineBlocks = document.querySelectorAll('.timeline-block');
         const observerOptions = { threshold: 0.15, rootMargin: "0px 0px -50px 0px" };
         const timelineObserver = new IntersectionObserver((entries, observer) => {
@@ -352,7 +428,83 @@
         }, observerOptions);
         timelineBlocks.forEach(item => timelineObserver.observe(item));
 
-        // RSVP FORM CONTROLLER
+        // 3. IMAGE PRE-BUILT VERSION SWITCHER LOGIC
+        (function evaluateUrlParams() {
+            const versions = {
+                'bw': { ext: 'jpeg', prefix: 'bw' },
+                'anim': { ext: 'gif', prefix: 'anim', maxCount: 3 }
+            };
+
+            const urlParams = new URLSearchParams(window.location.search);
+            const chosenVersionKey = urlParams.get('v');
+            
+            // Manage UI Active Tab highlights
+            document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+            if (!chosenVersionKey) {
+                document.getElementById('btn-default').classList.add('active');
+                return;
+            }
+            
+            const tabElement = document.getElementById(`btn-${chosenVersionKey}`);
+            if (tabElement) tabElement.classList.add('active');
+
+            const config = versions[chosenVersionKey];
+            if (!config) return;
+
+            document.querySelectorAll('img[data-story]').forEach(img => {
+                const storyNum = parseInt(img.getAttribute('data-story'), 10);
+                if (config.maxCount && storyNum > config.maxCount) {
+                    img.src = `story${storyNum}.jpeg`; // Fallback safely
+                    return;
+                }
+                img.src = `${config.prefix}${storyNum}.${config.ext}`;
+            });
+        })();
+
+        // 4. CUSTOM STUDIO TRAY CONTROLLER
+        function openDesignStudio(e) {
+            e.preventDefault();
+            document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+            document.getElementById('btn-custom').classList.add('active');
+            document.getElementById('customStudioTray').classList.add('open');
+            document.body.classList.add('admin-open');
+        }
+
+        // 5. DRAG AND DROP ENGINE LOGIC
+        (function runDragDropEngine() {
+            let localDraggedSrc = null;
+
+            document.querySelectorAll('.draggable-thumb').forEach(thumb => {
+                thumb.addEventListener('dragstart', (e) => {
+                    localDraggedSrc = e.target.src;
+                    e.dataTransfer.setData('text/plain', e.target.src);
+                });
+            });
+
+            document.querySelectorAll('.timeline-img-container').forEach(zone => {
+                zone.addEventListener('dragover', (e) => {
+                    e.preventDefault();
+                    zone.classList.add('drag-over');
+                });
+
+                zone.addEventListener('dragleave', () => {
+                    zone.classList.remove('drag-over');
+                });
+
+                zone.addEventListener('drop', (e) => {
+                    e.preventDefault();
+                    zone.classList.remove('drag-over');
+                    
+                    const newSourcePath = e.dataTransfer.getData('text/plain') || localDraggedSrc;
+                    if (newSourcePath) {
+                        const targetImg = zone.querySelector('.timeline-img');
+                        if (targetImg) targetImg.src = newSourcePath;
+                    }
+                });
+            });
+        })();
+
+        // 6. RSVP FORM CONTROLLER
         const rsvpForm = document.getElementById('rsvpForm');
         const successMessage = document.getElementById('successMessage');
         const submitBtn = document.getElementById('submitBtn');
@@ -402,62 +554,6 @@
             submitBtn.disabled = false;
             submitBtn.innerText = "Submit RSVP";
         });
-
-
-// IMAGE VERSION SWITCHER LOGIC
-(function() {
-    // 1. Define your image variations map
-    const versions = {
-        'default': {
-            ext: 'jpeg',
-            prefix: 'story'
-        },
-        'bw': {
-            ext: 'jpeg', // Change to 'png' or 'jpg' if your B&W files have a different extension
-            prefix: 'bw'
-        },
-        'anim': {
-            ext: 'gif',  // Assuming animations are .gif files
-            prefix: 'anim',
-            maxCount: 3  // Only has 3 images; stories 4 & 5 will fallback to default
-        }
-    };
-
-    // 2. Read the URL parameter (e.g., ?v=bw or ?v=anim)
-    const urlParams = new URLSearchParams(window.location.search);
-    const chosenVersionKey = urlParams.get('v');
-
-    // If no parameter is found or it doesn't exist in our map, stay on default
-    if (!chosenVersionKey || !versions[chosenVersionKey]) return;
-
-    const config = versions[chosenVersionKey];
-
-    // 3. Find all images with our data attribute and update them
-    document.querySelectorAll('img[data-story]').forEach(img => {
-        const storyNum = parseInt(img.getAttribute('data-story'), 10);
-
-        // Fallback safety layer if a version doesn't have all 5 images (like your anim variant)
-        if (config.maxCount && storyNum > config.maxCount) {
-            // Revert/Keep standard image for slots outside the variant range
-            img.src = `story${storyNum}.jpeg`;
-            return;
-        }
-
-        // Dynamically build and set the new image source route
-        img.src = `${config.prefix}${storyNum}.${config.ext}`;
-    });
-})();
-
-        
     </script>
-
-    <div style="position: fixed; bottom: 20px; right: 20px; z-index: 10000; background: rgba(255,255,255,0.95); padding: 10px; border-radius: 4px; box-shadow: 0 4px 15px rgba(0,0,0,0.15); font-family: 'Montserrat', sans-serif; font-size: 11px;">
-    <span style="font-weight: bold; display: block; margin-bottom: 5px; color: #5a6b5c;">Preview Version:</span>
-    <select onchange="location.search = this.value ? 'v=' + this.value : ''" style="padding: 5px; font-size: 11px; width: 120px;">
-        <option value="">Standard Color</option>
-        <option value="bw" ${window.location.search.includes('v=bw') ? 'selected' : ''}>Black & White</option>
-        <option value="anim" ${window.location.search.includes('v=anim') ? 'selected' : ''}>Animated</option>
-    </select>
-</div>
 </body>
 </html>
