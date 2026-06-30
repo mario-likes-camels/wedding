@@ -198,7 +198,8 @@
                 </div>
                 <div class="timeline-img-side">
                     <div class="timeline-img-container">
-                        <img src="story1.jpeg" alt="First Date" class="timeline-img img-story1">
+                        <!img src="story1.jpeg" alt="First Date" class="timeline-img img-story1">
+                        <img src="story1.jpeg" data-story="1" alt="First Date" class="timeline-img img-story1">
                     </div>
                 </div>
             </div>
@@ -211,7 +212,8 @@
                 </div>
                 <div class="timeline-img-side">
                     <div class="timeline-img-container">
-                        <img src="story2.jpeg" alt="The Tennis Incident" class="timeline-img img-story2">
+                        <!img src="story2.jpeg" alt="The Tennis Incident" class="timeline-img img-story2">
+                        <img src="story2.jpeg" data-story="2" alt="The Tennis Incident" class="timeline-img img-story2">
                     </div>
                 </div>
             </div>
@@ -224,7 +226,8 @@
                 </div>
                 <div class="timeline-img-side">
                     <div class="timeline-img-container">
-                        <img src="story4.jpeg" alt="The Beach Proposal" class="timeline-img img-story4">
+                        <!img src="story4.jpeg" alt="The Beach Proposal" class="timeline-img img-story4">
+                        <img src="story4.jpeg" data-story="4" alt="The Beach Proposal" class="timeline-img img-story4">
                     </div>
                 </div>
             </div>
@@ -237,7 +240,8 @@
                 </div>
                 <div class="timeline-img-side">
                     <div class="timeline-img-container">
-                        <img src="story3.jpeg" alt="The Melbourne Era" class="timeline-img img-story3">
+                        <!img src="story3.jpeg" alt="The Melbourne Era" class="timeline-img img-story3">
+                        <img src="story3.jpeg" data-story="3" alt="The Melbourne Era" class="timeline-img img-story3">
                     </div>
                 </div>
             </div>
@@ -250,7 +254,8 @@
                 </div>
                 <div class="timeline-img-side">
                     <div class="timeline-img-container container-story5">
-                        <img src="story5.jpeg" alt="The Future" class="timeline-img img-story5">
+                        <!img src="story5.jpeg" alt="The Future" class="timeline-img img-story5">
+                        <img src="story5.jpeg" data-story="5" alt="The Future" class="timeline-img img-story5">
                     </div>
                 </div>
             </div>
@@ -395,6 +400,62 @@
             submitBtn.disabled = false;
             submitBtn.innerText = "Submit RSVP";
         });
+
+
+// IMAGE VERSION SWITCHER LOGIC
+(function() {
+    // 1. Define your image variations map
+    const versions = {
+        'default': {
+            ext: 'jpeg',
+            prefix: 'story'
+        },
+        'bw': {
+            ext: 'jpeg', // Change to 'png' or 'jpg' if your B&W files have a different extension
+            prefix: 'bw'
+        },
+        'anim': {
+            ext: 'gif',  // Assuming animations are .gif files
+            prefix: 'anim',
+            maxCount: 3  // Only has 3 images; stories 4 & 5 will fallback to default
+        }
+    };
+
+    // 2. Read the URL parameter (e.g., ?v=bw or ?v=anim)
+    const urlParams = new URLSearchParams(window.location.search);
+    const chosenVersionKey = urlParams.get('v');
+
+    // If no parameter is found or it doesn't exist in our map, stay on default
+    if (!chosenVersionKey || !versions[chosenVersionKey]) return;
+
+    const config = versions[chosenVersionKey];
+
+    // 3. Find all images with our data attribute and update them
+    document.querySelectorAll('img[data-story]').forEach(img => {
+        const storyNum = parseInt(img.getAttribute('data-story'), 10);
+
+        // Fallback safety layer if a version doesn't have all 5 images (like your anim variant)
+        if (config.maxCount && storyNum > config.maxCount) {
+            // Revert/Keep standard image for slots outside the variant range
+            img.src = `story${storyNum}.jpeg`;
+            return;
+        }
+
+        // Dynamically build and set the new image source route
+        img.src = `${config.prefix}${storyNum}.${config.ext}`;
+    });
+})();
+
+        
     </script>
+
+    <div style="position: fixed; bottom: 20px; right: 20px; z-index: 10000; background: rgba(255,255,255,0.95); padding: 10px; border-radius: 4px; box-shadow: 0 4px 15px rgba(0,0,0,0.15); font-family: 'Montserrat', sans-serif; font-size: 11px;">
+    <span style="font-weight: bold; display: block; margin-bottom: 5px; color: #5a6b5c;">Preview Version:</span>
+    <select onchange="location.search = this.value ? 'v=' + this.value : ''" style="padding: 5px; font-size: 11px; width: 120px;">
+        <option value="">Standard Color</option>
+        <option value="bw" ${window.location.search.includes('v=bw') ? 'selected' : ''}>Black & White</option>
+        <option value="anim" ${window.location.search.includes('v=anim') ? 'selected' : ''}>Animated</option>
+    </select>
+</div>
 </body>
 </html>
