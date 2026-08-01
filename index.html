@@ -28,16 +28,6 @@
         h1, h2, h3 { font-family: 'Cormorant Garamond', serif; font-weight: 300; letter-spacing: 1px; }
         p { font-weight: 300; font-size: 0.95rem; }
         
-        /* Top Announcement Banner */
-        .top-banner {
-            background-color: #435044;
-            color: white;
-            padding: 15px 20px;
-            font-size: 0.95rem;
-            letter-spacing: 1px;
-            font-weight: 300;
-        }
-
         header {
             height: 90vh;
             display: flex;
@@ -120,7 +110,7 @@
             background: white;
             padding: 3px 8px;
             border-radius: 4px;
-            font-size: 0.75rem;
+            font-size: 0.72rem;
             font-family: 'Montserrat', sans-serif;
             font-weight: 600;
             white-space: nowrap;
@@ -244,11 +234,6 @@
 </head>
 <body>
 
-    <!-- Top Announcement Banner -->
-    <div class="top-banner">
-        Whaaaa, that's right! Natasha and Patrick are getting married! What's more -- you're invited! Incredible stuff, much excitement!
-    </div>
-
     <header>
         <h1>Natasha & Patrick</h1>
         <p>Are Getting Married</p>
@@ -264,6 +249,10 @@
 
     <!-- THE DETAILS SECTION -->
     <div class="section">
+        <p style="font-family: 'Cormorant Garamond', serif; font-size: 1.5rem; color: var(--primary); margin-bottom: 25px; font-style: italic; max-width: 700px; margin-left: auto; margin-right: auto;">
+            Whaaaa, that's right! Natasha and Patrick are getting married! What's more -- you're invited! Incredible stuff, much excitement!
+        </p>
+
         <h2>The Details</h2>
         <p class="section-subtitle">Join us for the special day</p>
         <p style="max-width: 650px; margin: 0 auto 30px auto; font-weight: 300;">
@@ -282,7 +271,7 @@
                 <p><strong>"Coast" Port Beach</strong><br>Overlooking the waves for dinner, toasts, and dancing.<br><br><em>Note: Free parking is available onsite, but you will need to register your car number plate upon arrival to guarantee it.</em></p>
             </div>
             <div class="detail-card">
-                <h3>Accommodation Hub</h3>
+                <h3>Accommodation</h3>
                 <span class="time">Where to Stay</span>
                 <p>We recommend booking accommodation around <strong>Scarborough</strong> or <strong>Cottesloe/Fremantle</strong>. Scarborough offers a vibrant beachside strip close to activities and easy coastal transit.</p>
             </div>
@@ -479,20 +468,20 @@
 
         // Accommodation Zone Polygon spanning from Cottesloe up through Scarborough and North Beach coastline
         const accommodationZoneCoords = [
-            [-32.0150, 115.7450], // Cottesloe South
-            [-31.9967, 115.7400], // Cottesloe Coast
-            [-31.9400, 115.7420], // City Beach stretch
-            [-31.8935, 115.7380], // Scarborough Coast
-            [-31.8545, 115.7400], // North Beach Coast
-            [-31.8545, 115.7550], // North Beach Inland
-            [-31.8935, 115.7580], // Scarborough Inland
-            [-31.9967, 115.7600]  // Cottesloe Inland
+            [-32.0150, 115.7450], 
+            [-31.9967, 115.7400], 
+            [-31.9400, 115.7420], 
+            [-31.8935, 115.7380], 
+            [-31.8545, 115.7400], 
+            [-31.8545, 115.7550], 
+            [-31.8935, 115.7580], 
+            [-31.9967, 115.7600]  
         ];
 
         L.polygon(accommodationZoneCoords, {
             color: '#7e22ce',
             fillColor: '#a855f7',
-            fillOpacity: 0.25,
+            fillOpacity: 0.3,
             weight: 1.5,
             dashArray: '5, 5'
         }).addTo(map).bindPopup("<h4>Accommodation Zone</h4><p>Recommended coastal stay stretch from Cottesloe up to North Beach.</p>");
@@ -504,7 +493,7 @@
                 title: "Scarborough",
                 desc: "The primary suggested place to stay to be close to the beach, vibrant cafes, and coastal activities throughout the weekend.",
                 type: "purple",
-                label: "Accom. Hub"
+                label: "Accommodation"
             },
             {
                 name: "St Mary Star of the Sea",
@@ -536,7 +525,7 @@
                 title: "King's Park & Botanic Garden",
                 desc: "A gorgeous recommendation for pre- or post-wedding exploring, offering sweeping panoramic views across the Swan River and Perth skyline.",
                 type: "green",
-                label: "Activity"
+                label: "King's Park"
             },
             {
                 name: "Hillarys Boat Harbour",
@@ -544,7 +533,7 @@
                 title: "Hillarys Boat Harbour",
                 desc: "Great spot for a family outing with a lively marina feel, boardwalk dining, shops, and the departure point for Rottnest Island ferries.",
                 type: "green",
-                label: "Activity"
+                label: "Hillarys Boat Harbour"
             },
             {
                 name: "Margaret River",
@@ -552,7 +541,7 @@
                 title: "Margaret River Region",
                 desc: "Highly recommended for a post-wedding getaway trip down south to experience world-class wineries, breweries, and breathtaking nature.",
                 type: "green",
-                label: "Activity"
+                label: "Margaret River"
             }
         ];
 
@@ -566,8 +555,8 @@
             const customIcon = L.divIcon({
                 className: 'custom-div-icon',
                 html: `<div class="map-badge ${badgeClass}">${loc.label}</div>`,
-                iconSize: [80, 24],
-                iconAnchor: [40, 12]
+                iconSize: [110, 24],
+                iconAnchor: [55, 12]
             });
 
             const marker = L.marker(loc.coords, { icon: customIcon }).addTo(map);
