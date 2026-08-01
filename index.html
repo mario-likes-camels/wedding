@@ -4,7 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Natasha & Patrick's Wedding</title>
-    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght=0,300;0,400;0,600;1,400&family=Montserrat:wght@200;300;400&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,400&family=Montserrat:wght@200;300;400&display=swap" rel="stylesheet">
+    
+    <!-- Leaflet CSS for actual interactive map tiles -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
     
     <style>
         :root {
@@ -81,7 +84,7 @@
         .detail-card .time { font-family: 'Cormorant Garamond', serif; font-size: 1.1rem; font-weight: 600; color: #435044; margin-bottom: 15px; display: block; }
         .detail-card p { font-size: 0.9rem; color: #555; }
 
-        /* Interactive Map Section */
+        /* Interactive Real Map Section */
         .map-section-wrapper {
             background-color: var(--light-taupe);
             padding: 100px 20px;
@@ -95,63 +98,32 @@
             border-radius: 2px;
             box-shadow: 0 10px 30px rgba(0,0,0,0.03);
         }
-        .interactive-map {
-            position: relative;
+        #perthMap {
             width: 100%;
-            height: 480px;
-            background: #e2e8e4;
+            height: 500px;
             border-radius: 2px;
-            overflow: hidden;
-            background-image: linear-gradient(rgba(90, 107, 92, 0.05) 1px, transparent 1px),
-                              linear-gradient(90deg, rgba(90, 107, 92, 0.05) 1px, transparent 1px);
-            background-size: 40px 40px;
+            z-index: 1;
         }
-        /* Simulated Stylized Map Canvas / Background Graphic representation */
-        .map-bg-label {
-            position: absolute;
+        /* Custom styling for Leaflet popups to match aesthetic */
+        .leaflet-popup-content-wrapper {
+            background: #fff;
+            border-radius: 2px;
+            font-family: 'Montserrat', sans-serif;
+            color: var(--text);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+        }
+        .leaflet-popup-content h4 {
             font-family: 'Cormorant Garamond', serif;
-            font-size: 1.5rem;
-            color: rgba(90, 107, 92, 0.2);
-            letter-spacing: 3px;
-            pointer-events: none;
-        }
-        
-        /* Map Pins */
-        .map-pin {
-            position: absolute;
-            transform: translate(-50%, -100%);
-            cursor: pointer;
-            background: white;
-            border: 2px solid var(--primary);
-            padding: 6px 12px;
-            border-radius: 20px;
-            font-size: 0.75rem;
-            font-weight: 600;
+            font-size: 1.3rem;
             color: var(--primary);
-            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-            transition: 0.3s ease;
-            white-space: nowrap;
-            z-index: 5;
+            margin-bottom: 5px;
         }
-        .map-pin:hover, .map-pin.active {
-            background: var(--primary);
-            color: white;
-            transform: translate(-50%, -100%) scale(1.08);
-        }
-        .map-pin::after {
-            content: '';
-            position: absolute;
-            bottom: -6px;
-            left: 50%;
-            transform: translateX(-50%);
-            border-width: 6px 6px 0;
-            border-style: solid;
-            border-color: var(--primary) transparent;
-            display: block;
-            width: 0;
+        .leaflet-popup-content p {
+            font-size: 0.85rem;
+            color: #555;
+            font-weight: 300;
         }
 
-        /* Map Info Drawer */
         .map-info-display {
             margin-top: 25px;
             padding: 25px;
@@ -272,7 +244,7 @@
             <div class="detail-card">
                 <h3>Ceremony</h3>
                 <span class="time">3:00 PM</span>
-                <p><strong>St Mary Star of the Sea</strong><br>Cottesloe, Perth. A beautiful traditional service by the ocean to begin our next chapter.</p>
+                <p><strong>St Mary Star of the Sea</strong><br>Cottesloe, Perth. A traditional church service to begin our next chapter.</p>
             </div>
             <div class="detail-card">
                 <h3>Reception</h3>
@@ -288,29 +260,17 @@
         <p style="margin-top: 40px; font-weight: 300; font-style: italic;">Further details to follow—keep checking back closer to the time!</p>
     </div>
 
-    <!-- INTERACTIVE PERTH MAP & WEEKEND GUIDE -->
+    <!-- INTERACTIVE REAL PERTH MAP & WEEKEND GUIDE -->
     <div class="map-section-wrapper">
         <div class="map-container-box">
             <h2>Explore Perth & Weekend Itinerary</h2>
-            <p class="section-subtitle">Click the pins below to discover key locations, wedding venues, and weekend activities</p>
+            <p class="section-subtitle">Click the map pins below to view exact locations, venues, and weekend activities</p>
             
-            <div class="interactive-map" id="perthMap">
-                <div class="map-bg-label" style="top: 20%; left: 15%;">INDIAN OCEAN</div>
-                <div class="map-bg-label" style="top: 75%; left: 60%;">PERTH METRO</div>
-
-                <!-- Pins placed dynamically via layout positioning -->
-                <div class="map-pin" style="top: 25%; left: 25%;" onclick="showMapInfo('scarborough')">Scarborough (Stay Zone)</div>
-                <div class="map-pin" style="top: 45%; left: 30%;" onclick="showMapInfo('cottesloe')">St Mary's Church (Ceremony)</div>
-                <div class="map-pin" style="top: 60%; left: 35%;" onclick="showMapInfo('coast')">Coast Port Beach (Reception)</div>
-                <div class="map-pin" style="top: 35%; left: 70%;" onclick="showMapInfo('kingspark')">King's Park</div>
-                <div class="map-pin" style="top: 15%; left: 55%;" onclick="showMapInfo('hillarys')">Hillarys Boat Harbour</div>
-                <div class="map-pin" style="top: 70%; left: 20%;" onclick="showMapInfo('northbeach')">North Beach (Family Lunch)</div>
-                <div class="map-pin" style="top: 85%; left: 80%;" onclick="showMapInfo('margaretriver')">Margaret River (Post-Wedding Trip)</div>
-            </div>
+            <div id="perthMap"></div>
 
             <div class="map-info-display" id="mapInfoCard">
                 <h4>Interactive Area Guide</h4>
-                <p>Click any location pin on the map above to view specific details, recommended spots, and schedule highlights for the wedding weekend.</p>
+                <p>Click any location pin on the interactive map above to view specific details, venue notes, and schedule highlights for the wedding weekend.</p>
             </div>
         </div>
     </div>
@@ -450,6 +410,9 @@
         </div>
     </div>
 
+    <!-- Leaflet JS -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+
     <script>
         const GOOGLE_API_URL = "https://script.google.com/macros/s/AKfycbwj2AArOlD_bTzLRaJ-oOQyYa36ntffiWgbgj6nHfXT7v6ahvje8a7-GelDVpcGv_sfGQ/exec";
 
@@ -476,47 +439,71 @@
             document.getElementById("seconds").innerText = seconds < 10 ? "0" + seconds : seconds;
         }, 1000);
 
-        // 2. INTERACTIVE MAP DATA & HANDLER
-        const mapData = {
-            scarborough: {
-                title: "Scarborough (Recommended Accommodation Zone)",
+        // 2. REAL INTERACTIVE LEAFLET MAP SETUP
+        // Centered around Perth coastal region
+        const map = L.map('perthMap').setView([-31.95, 115.78], 11);
+
+        // Clean, elegant map tiles (CartoDB Positron)
+        L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+            maxZoom: 19,
+            attribution: '&copy; <a href="https://carto.com/">CARTO</a>'
+        }).addTo(map);
+
+        const locations = [
+            {
+                name: "Scarborough",
+                coords: [-31.8935, 115.7516],
+                title: "Scarborough (Recommended Stay Zone)",
                 desc: "The primary suggested place to stay to be close to the beach, vibrant cafes, and coastal activities throughout the weekend."
             },
-            cottesloe: {
+            {
+                name: "St Mary Star of the Sea",
+                coords: [-31.9967, 115.7533],
                 title: "St Mary Star of the Sea (Wedding Ceremony)",
-                desc: "The wedding ceremony begins sharply at 3:00 PM on February 20, 2027. Set right near Perth's iconic coastline."
+                desc: "The wedding church ceremony begins sharply at 3:00 PM on February 20, 2027."
             },
-            coast: {
+            {
+                name: "Coast Port Beach",
+                coords: [-32.0353, 115.7486],
                 title: "Coast Port Beach (Wedding Reception)",
                 desc: "Festivities kick off here at 5:30 PM for dinner, drinks, and ocean views. Free parking is available onsite, but remember to register your car number plate upon arrival to guarantee it!"
             },
-            northbeach: {
+            {
+                name: "North Beach",
+                coords: [-31.8545, 115.7535],
                 title: "North Beach",
                 desc: "The gathering spot for a relaxing family lunch over the wedding weekend at grandparents' house."
             },
-            kingspark: {
+            {
+                name: "King's Park",
+                coords: [-31.9566, 115.8404],
                 title: "King's Park & Botanic Garden",
                 desc: "A gorgeous recommendation for pre- or post-wedding exploring, offering sweeping panoramic views across the Swan River and Perth skyline."
             },
-            hillarys: {
+            {
+                name: "Hillarys Boat Harbour",
+                coords: [-31.8288, 115.7391],
                 title: "Hillarys Boat Harbour",
                 desc: "Great spot for a family outing with a lively marina feel, boardwalk dining, shops, and the departure point for Rottnest Island ferries."
             },
-            margaretriver: {
+            {
+                name: "Margaret River",
+                coords: [-33.9555, 115.0752],
                 title: "Margaret River Region",
                 desc: "Highly recommended for a post-wedding getaway trip down south to experience world-class wineries, breweries, and breathtaking nature."
             }
-        };
+        ];
 
-        function showMapInfo(locationKey) {
-            const info = mapData[locationKey];
-            const displayBox = document.getElementById('mapInfoCard');
-            displayBox.innerHTML = `<h4>${info.title}</h4><p>${info.desc}</p>`;
+        const displayBox = document.getElementById('mapInfoCard');
+
+        locations.forEach(loc => {
+            const marker = L.marker(loc.coords).addTo(map);
+            marker.bindPopup(`<h4>${loc.title}</h4><p>${loc.desc}</p>`);
             
-            // Highlight selected pin
-            document.querySelectorAll('.map-pin').forEach(pin => pin.classList.remove('active'));
-            event.target.classList.add('active');
-        }
+            marker.on('click', () => {
+                displayBox.innerHTML = `<h4>${loc.title}</h4><p>${loc.desc}</p>`;
+            });
+        });
 
         // 3. SCROLL TIMELINE ANIMATION
         const timelineBlocks = document.querySelectorAll('.timeline-block');
