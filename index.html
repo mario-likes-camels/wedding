@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Natasha & Patrick's Wedding</title>
-    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght=0,300;0,400;0,600;1,400&family=Montserrat:wght=200;300;400&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght=0,300;0,400;0,600;1,400&family=Montserrat:wght@200;300;400&display=swap" rel="stylesheet">
     
     <style>
         :root {
@@ -39,8 +39,7 @@
         }
         header h1 { font-size: 4.5rem; color: var(--primary); margin-bottom: 10px; z-index: 2; }
         header p { font-size: 1.1rem; letter-spacing: 4px; text-transform: uppercase; margin-bottom: 30px; z-index: 2; }
-        .countdown-container { z-index: 2; }
-
+        
         .countdown-container {
             display: flex;
             gap: 25px;
@@ -50,6 +49,7 @@
             border-radius: 2px;
             backdrop-filter: blur(5px);
             border: 1px solid rgba(255,255,255,0.5);
+            z-index: 2;
         }
         .countdown-item { display: flex; flex-direction: column; align-items: center; }
         .countdown-num { font-family: 'Cormorant Garamond', serif; font-size: 2.5rem; color: var(--primary); font-weight: 400; }
@@ -61,6 +61,107 @@
             content: ''; display: block; width: 50px; height: 1px; background: var(--primary); margin: 15px auto 0 auto; opacity: 0.5;
         }
         .section-subtitle { font-style: italic; font-family: 'Cormorant Garamond', serif; font-size: 1.3rem; margin-bottom: 40px; opacity: 0.8;}
+
+        /* Event Cards Grid */
+        .details-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+            text-align: left;
+        }
+        .detail-card {
+            background: white;
+            padding: 30px;
+            border-radius: 2px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.02);
+            border-top: 3px solid var(--primary);
+        }
+        .detail-card h3 { font-size: 1.5rem; color: var(--primary); margin-bottom: 10px; }
+        .detail-card .time { font-family: 'Cormorant Garamond', serif; font-size: 1.1rem; font-weight: 600; color: #435044; margin-bottom: 15px; display: block; }
+        .detail-card p { font-size: 0.9rem; color: #555; }
+
+        /* Interactive Map Section */
+        .map-section-wrapper {
+            background-color: var(--light-taupe);
+            padding: 100px 20px;
+            width: 100%;
+        }
+        .map-container-box {
+            max-width: 950px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border-radius: 2px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.03);
+        }
+        .interactive-map {
+            position: relative;
+            width: 100%;
+            height: 480px;
+            background: #e2e8e4;
+            border-radius: 2px;
+            overflow: hidden;
+            background-image: linear-gradient(rgba(90, 107, 92, 0.05) 1px, transparent 1px),
+                              linear-gradient(90deg, rgba(90, 107, 92, 0.05) 1px, transparent 1px);
+            background-size: 40px 40px;
+        }
+        /* Simulated Stylized Map Canvas / Background Graphic representation */
+        .map-bg-label {
+            position: absolute;
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.5rem;
+            color: rgba(90, 107, 92, 0.2);
+            letter-spacing: 3px;
+            pointer-events: none;
+        }
+        
+        /* Map Pins */
+        .map-pin {
+            position: absolute;
+            transform: translate(-50%, -100%);
+            cursor: pointer;
+            background: white;
+            border: 2px solid var(--primary);
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: var(--primary);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            transition: 0.3s ease;
+            white-space: nowrap;
+            z-index: 5;
+        }
+        .map-pin:hover, .map-pin.active {
+            background: var(--primary);
+            color: white;
+            transform: translate(-50%, -100%) scale(1.08);
+        }
+        .map-pin::after {
+            content: '';
+            position: absolute;
+            bottom: -6px;
+            left: 50%;
+            transform: translateX(-50%);
+            border-width: 6px 6px 0;
+            border-style: solid;
+            border-color: var(--primary) transparent;
+            display: block;
+            width: 0;
+        }
+
+        /* Map Info Drawer */
+        .map-info-display {
+            margin-top: 25px;
+            padding: 25px;
+            background: #faf8f5;
+            border-left: 3px solid var(--primary);
+            text-align: left;
+            min-height: 110px;
+        }
+        .map-info-display h4 { font-family: 'Cormorant Garamond', serif; font-size: 1.4rem; color: var(--primary); margin-bottom: 5px; }
+        .map-info-display p { font-size: 0.9rem; color: #555; }
 
         /* Side-by-Side Timeline Layout */
         .timeline { position: relative; max-width: 950px; margin: 60px auto 0 auto; padding: 20px 0; }
@@ -92,11 +193,7 @@
             border-radius: 3px; 
             box-shadow: 0 4px 20px rgba(0,0,0,0.06); 
         }
-        .timeline-img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
+        .timeline-img { width: 100%; height: 100%; object-fit: cover; }
 
         /* CUSTOM IMAGE FRAMING RULES */
         .img-story1 { object-position: center bottom; }
@@ -112,7 +209,6 @@
             box-shadow: 0 10px 30px rgba(0,0,0,0.02); max-width: 550px; margin: 0 auto;
         }
         .form-instruction-step { font-size: 0.9rem; margin-bottom: 20px; color: #666; font-style: italic; text-align: left; }
-        .form-instruction-step:last-of-type { margin-bottom: 35px; }
         .form-group { text-align: left; margin-bottom: 25px; }
         .form-group label { display: block; font-size: 0.8rem; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 1.5px;}
         input, select, textarea {
@@ -164,17 +260,62 @@
         </div>
     </header>
 
+    <!-- THE DETAILS SECTION -->
     <div class="section">
         <h2>The Details</h2>
         <p class="section-subtitle">Join us for our special day</p>
-        <p style="max-width: 600px; margin: 0 auto; font-weight: 300;">
-            We can't wait to celebrate our wedding with you in Western Australia. The church service will be held at <strong>Cottlesloe Saint Mary of the Sea</strong>, followed by a reception at <strong>"Coast"</strong>, overlooking the beach and waves. Prepare for an evening of dining, toasts, and dancing by the ocean.
+        <p style="max-width: 650px; margin: 0 auto 30px auto; font-weight: 300;">
+            We can't wait to celebrate our wedding with you in Western Australia. Below is the itinerary and important information for the day.
         </p>
-    <p style="max-width: 600px; margin: 0 auto; font-weight: 300;">
-            <em>Further details to follow.</em>
-        </p>
+
+        <div class="details-grid">
+            <div class="detail-card">
+                <h3>Ceremony</h3>
+                <span class="time">3:00 PM</span>
+                <p><strong>St Mary Star of the Sea</strong><br>Cottesloe, Perth. A beautiful traditional service by the ocean to begin our next chapter.</p>
+            </div>
+            <div class="detail-card">
+                <h3>Reception</h3>
+                <span class="time">5:30 PM Onwards</span>
+                <p><strong>"Coast" Port Beach</strong><br>Overlooking the waves for dinner, toasts, and dancing.<br><br><em>Note: Free parking is available onsite, but you will need to register your car number plate upon arrival to guarantee it.</em></p>
+            </div>
+            <div class="detail-card">
+                <h3>Accommodation Hub</h3>
+                <span class="time">Where to Stay</span>
+                <p>We recommend booking accommodation around <strong>Scarborough</strong> or <strong>Cottesloe/Fremantle</strong>. Scarborough offers a vibrant beachside strip close to activities and easy coastal transit.</p>
+            </div>
+        </div>
+        <p style="margin-top: 40px; font-weight: 300; font-style: italic;">Further details to follow—keep checking back closer to the time!</p>
     </div>
 
+    <!-- INTERACTIVE PERTH MAP & WEEKEND GUIDE -->
+    <div class="map-section-wrapper">
+        <div class="map-container-box">
+            <h2>Explore Perth & Weekend Itinerary</h2>
+            <p class="section-subtitle">Click the pins below to discover key locations, wedding venues, and weekend activities</p>
+            
+            <div class="interactive-map" id="perthMap">
+                <div class="map-bg-label" style="top: 20%; left: 15%;">INDIAN OCEAN</div>
+                <div class="map-bg-label" style="top: 75%; left: 60%;">PERTH METRO</div>
+
+                <!-- Pins placed dynamically via layout positioning -->
+                <div class="map-pin" style="top: 25%; left: 25%;" onclick="showMapInfo('scarborough')">Scarborough (Stay Zone)</div>
+                <div class="map-pin" style="top: 45%; left: 30%;" onclick="showMapInfo('cottesloe')">St Mary's Church (Ceremony)</div>
+                <div class="map-pin" style="top: 60%; left: 35%;" onclick="showMapInfo('coast')">Coast Port Beach (Reception)</div>
+                <div class="map-pin" style="top: 35%; left: 70%;" onclick="showMapInfo('kingspark')">King's Park</div>
+                <div class="map-pin" style="top: 15%; left: 55%;" onclick="showMapInfo('hillarys')">Hillarys Boat Harbour</div>
+                <div class="map-pin" style="top: 70%; left: 20%;" onclick="showMapInfo('northbeach')">North Beach (Family Lunch)</div>
+                <div class="map-pin" style="top: 85%; left: 80%;" onclick="showMapInfo('margaretriver')">Margaret River (Post-Wedding Trip)</div>
+            </div>
+
+            <div class="map-info-display" id="mapInfoCard">
+                <h4>Interactive Area Guide</h4>
+                <p>Click any location pin on the map above to view specific details, recommended spots, and schedule highlights for the wedding weekend.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- OUR STORY SECTION -->
     <div class="section" style="background-color: var(--light-taupe); max-width: 100%;">
         <h2>Our Story</h2>
         <p class="section-subtitle">A collection of calculated risks, minor medical emergencies, and street furniture</p>
@@ -249,6 +390,7 @@
         </div>
     </div>
 
+    <!-- RSVP SECTION -->
     <div class="section">
         <h2>RSVP</h2>
         <p class="section-subtitle">Kindly reply by 1 November 2026</p>
@@ -258,7 +400,7 @@
             <strong>Dress code:</strong> Coastal cocktail.
         </p>
         <p class="form-instruction-step" style="text-align: center;">
-            <strong>A note on gifts:</strong> Please know that should you be able to attend, your prescence is more than enough as a present. However for those who wish to contribute towards the couple's future, a wishing well will be available at the reception venue. 
+            <strong>A note on gifts:</strong> Please know that should you be able to attend, your presence is more than enough as a present. However for those who wish to contribute towards the couple's future, a wishing well will be available at the reception venue. 
         </p>
         <p class="form-instruction-step" style="text-align: center;">
             <strong>Important:</strong> To help us keep track of numbers and specific dietary needs, <em>please submit a separate form for each individual guest</em> attending.
@@ -334,7 +476,49 @@
             document.getElementById("seconds").innerText = seconds < 10 ? "0" + seconds : seconds;
         }, 1000);
 
-        // 2. SCROLL TIMELINE ANIMATION
+        // 2. INTERACTIVE MAP DATA & HANDLER
+        const mapData = {
+            scarborough: {
+                title: "Scarborough (Recommended Accommodation Zone)",
+                desc: "The primary suggested place to stay to be close to the beach, vibrant cafes, and coastal activities throughout the weekend."
+            },
+            cottesloe: {
+                title: "St Mary Star of the Sea (Wedding Ceremony)",
+                desc: "The wedding ceremony begins sharply at 3:00 PM on February 20, 2027. Set right near Perth's iconic coastline."
+            },
+            coast: {
+                title: "Coast Port Beach (Wedding Reception)",
+                desc: "Festivities kick off here at 5:30 PM for dinner, drinks, and ocean views. Free parking is available onsite, but remember to register your car number plate upon arrival to guarantee it!"
+            },
+            northbeach: {
+                title: "North Beach",
+                desc: "The gathering spot for a relaxing family lunch over the wedding weekend at grandparents' house."
+            },
+            kingspark: {
+                title: "King's Park & Botanic Garden",
+                desc: "A gorgeous recommendation for pre- or post-wedding exploring, offering sweeping panoramic views across the Swan River and Perth skyline."
+            },
+            hillarys: {
+                title: "Hillarys Boat Harbour",
+                desc: "Great spot for a family outing with a lively marina feel, boardwalk dining, shops, and the departure point for Rottnest Island ferries."
+            },
+            margaretriver: {
+                title: "Margaret River Region",
+                desc: "Highly recommended for a post-wedding getaway trip down south to experience world-class wineries, breweries, and breathtaking nature."
+            }
+        };
+
+        function showMapInfo(locationKey) {
+            const info = mapData[locationKey];
+            const displayBox = document.getElementById('mapInfoCard');
+            displayBox.innerHTML = `<h4>${info.title}</h4><p>${info.desc}</p>`;
+            
+            // Highlight selected pin
+            document.querySelectorAll('.map-pin').forEach(pin => pin.classList.remove('active'));
+            event.target.classList.add('active');
+        }
+
+        // 3. SCROLL TIMELINE ANIMATION
         const timelineBlocks = document.querySelectorAll('.timeline-block');
         const observerOptions = { threshold: 0.15, rootMargin: "0px 0px -50px 0px" };
         const timelineObserver = new IntersectionObserver((entries, observer) => {
@@ -347,7 +531,7 @@
         }, observerOptions);
         timelineBlocks.forEach(item => timelineObserver.observe(item));
 
-        // 3. RSVP FORM CONTROLLER
+        // 4. RSVP FORM CONTROLLER
         const rsvpForm = document.getElementById('rsvpForm');
         const successMessage = document.getElementById('successMessage');
         const submitBtn = document.getElementById('submitBtn');
