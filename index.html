@@ -28,8 +28,18 @@
         h1, h2, h3 { font-family: 'Cormorant Garamond', serif; font-weight: 300; letter-spacing: 1px; }
         p { font-weight: 300; font-size: 0.95rem; }
         
+        /* Top Announcement Banner */
+        .top-banner {
+            background-color: #435044;
+            color: white;
+            padding: 15px 20px;
+            font-size: 0.95rem;
+            letter-spacing: 1px;
+            font-weight: 300;
+        }
+
         header {
-            height: 100vh;
+            height: 90vh;
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -104,7 +114,24 @@
             border-radius: 2px;
             z-index: 1;
         }
-        /* Custom styling for Leaflet popups to match aesthetic */
+        
+        /* Custom map label pins */
+        .map-badge {
+            background: white;
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 600;
+            white-space: nowrap;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+            border: 1px solid rgba(0,0,0,0.1);
+        }
+        .badge-blue { color: #1d4ed8; border-color: #93c5fd; }
+        .badge-green { color: #15803d; border-color: #86efac; }
+        .badge-purple { color: #7e22ce; border-color: #d8b4fe; }
+
+        /* Leaflet popup customization */
         .leaflet-popup-content-wrapper {
             background: #fff;
             border-radius: 2px;
@@ -167,7 +194,6 @@
         }
         .timeline-img { width: 100%; height: 100%; object-fit: cover; }
 
-        /* CUSTOM IMAGE FRAMING RULES */
         .img-story1 { object-position: center bottom; }
         .img-story2 { object-position: center bottom; }
         .img-story3 { object-position: center center; }
@@ -200,7 +226,6 @@
         .secondary-btn { background-color: transparent; color: var(--primary); border: 1px solid var(--primary); margin-top: 25px; }
         .secondary-btn:hover { background-color: var(--light-taupe); color: #435044; }
 
-        /* Smooth fallback layout for smaller screens */
         @media screen and (max-width: 768px) {
             header { background-size: 115% auto; background-position: center 20%; }
             header h1 { font-size: 3.2rem; }
@@ -219,6 +244,11 @@
 </head>
 <body>
 
+    <!-- Top Announcement Banner -->
+    <div class="top-banner">
+        Whaaaa, that's right! Natasha and Patrick are getting married! What's more -- you're invited! Incredible stuff, much excitement!
+    </div>
+
     <header>
         <h1>Natasha & Patrick</h1>
         <p>Are Getting Married</p>
@@ -235,7 +265,7 @@
     <!-- THE DETAILS SECTION -->
     <div class="section">
         <h2>The Details</h2>
-        <p class="section-subtitle">Join us for our special day</p>
+        <p class="section-subtitle">Join us for the special day</p>
         <p style="max-width: 650px; margin: 0 auto 30px auto; font-weight: 300;">
             We can't wait to celebrate our wedding with you in Western Australia. Below is the itinerary and important information for the day.
         </p>
@@ -440,64 +470,107 @@
         }, 1000);
 
         // 2. REAL INTERACTIVE LEAFLET MAP SETUP
-        // Centered around Perth coastal region
-        const map = L.map('perthMap').setView([-31.95, 115.78], 11);
+        const map = L.map('perthMap').setView([-31.93, 115.75], 11);
 
-        // Clean, elegant map tiles (CartoDB Positron)
         L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
             maxZoom: 19,
             attribution: '&copy; <a href="https://carto.com/">CARTO</a>'
         }).addTo(map);
 
+        // Accommodation Zone Polygon spanning from Cottesloe up through Scarborough and North Beach coastline
+        const accommodationZoneCoords = [
+            [-32.0150, 115.7450], // Cottesloe South
+            [-31.9967, 115.7400], // Cottesloe Coast
+            [-31.9400, 115.7420], // City Beach stretch
+            [-31.8935, 115.7380], // Scarborough Coast
+            [-31.8545, 115.7400], // North Beach Coast
+            [-31.8545, 115.7550], // North Beach Inland
+            [-31.8935, 115.7580], // Scarborough Inland
+            [-31.9967, 115.7600]  // Cottesloe Inland
+        ];
+
+        L.polygon(accommodationZoneCoords, {
+            color: '#7e22ce',
+            fillColor: '#a855f7',
+            fillOpacity: 0.25,
+            weight: 1.5,
+            dashArray: '5, 5'
+        }).addTo(map).bindPopup("<h4>Accommodation Zone</h4><p>Recommended coastal stay stretch from Cottesloe up to North Beach.</p>");
+
         const locations = [
             {
                 name: "Scarborough",
                 coords: [-31.8935, 115.7516],
-                title: "Scarborough (Recommended Stay Zone)",
-                desc: "The primary suggested place to stay to be close to the beach, vibrant cafes, and coastal activities throughout the weekend."
+                title: "Scarborough",
+                desc: "The primary suggested place to stay to be close to the beach, vibrant cafes, and coastal activities throughout the weekend.",
+                type: "purple",
+                label: "Accom. Hub"
             },
             {
                 name: "St Mary Star of the Sea",
                 coords: [-31.9967, 115.7533],
-                title: "St Mary Star of the Sea (Wedding Ceremony)",
-                desc: "The wedding church ceremony begins sharply at 3:00 PM on February 20, 2027."
+                title: "St Mary Star of the Sea",
+                desc: "The wedding church ceremony begins sharply at 3:00 PM on February 20, 2027.",
+                type: "blue",
+                label: "Ceremony"
             },
             {
                 name: "Coast Port Beach",
                 coords: [-32.0353, 115.7486],
-                title: "Coast Port Beach (Wedding Reception)",
-                desc: "Festivities kick off here at 5:30 PM for dinner, drinks, and ocean views. Free parking is available onsite, but remember to register your car number plate upon arrival to guarantee it!"
+                title: "Coast Port Beach",
+                desc: "Festivities kick off here at 5:30 PM for dinner, drinks, and ocean views. Free parking is available onsite, but remember to register your car number plate upon arrival to guarantee it!",
+                type: "blue",
+                label: "Reception"
             },
             {
                 name: "North Beach",
                 coords: [-31.8545, 115.7535],
                 title: "North Beach",
-                desc: "The gathering spot for a relaxing family lunch over the wedding weekend at grandparents' house."
+                desc: "The gathering spot for a relaxing family lunch over the wedding weekend at grandparents' house.",
+                type: "blue",
+                label: "Family Lunch"
             },
             {
                 name: "King's Park",
                 coords: [-31.9566, 115.8404],
                 title: "King's Park & Botanic Garden",
-                desc: "A gorgeous recommendation for pre- or post-wedding exploring, offering sweeping panoramic views across the Swan River and Perth skyline."
+                desc: "A gorgeous recommendation for pre- or post-wedding exploring, offering sweeping panoramic views across the Swan River and Perth skyline.",
+                type: "green",
+                label: "Activity"
             },
             {
                 name: "Hillarys Boat Harbour",
                 coords: [-31.8288, 115.7391],
                 title: "Hillarys Boat Harbour",
-                desc: "Great spot for a family outing with a lively marina feel, boardwalk dining, shops, and the departure point for Rottnest Island ferries."
+                desc: "Great spot for a family outing with a lively marina feel, boardwalk dining, shops, and the departure point for Rottnest Island ferries.",
+                type: "green",
+                label: "Activity"
             },
             {
                 name: "Margaret River",
                 coords: [-33.9555, 115.0752],
                 title: "Margaret River Region",
-                desc: "Highly recommended for a post-wedding getaway trip down south to experience world-class wineries, breweries, and breathtaking nature."
+                desc: "Highly recommended for a post-wedding getaway trip down south to experience world-class wineries, breweries, and breathtaking nature.",
+                type: "green",
+                label: "Activity"
             }
         ];
 
         const displayBox = document.getElementById('mapInfoCard');
 
         locations.forEach(loc => {
-            const marker = L.marker(loc.coords).addTo(map);
+            let badgeClass = 'badge-blue';
+            if (loc.type === 'green') badgeClass = 'badge-green';
+            if (loc.type === 'purple') badgeClass = 'badge-purple';
+
+            const customIcon = L.divIcon({
+                className: 'custom-div-icon',
+                html: `<div class="map-badge ${badgeClass}">${loc.label}</div>`,
+                iconSize: [80, 24],
+                iconAnchor: [40, 12]
+            });
+
+            const marker = L.marker(loc.coords, { icon: customIcon }).addTo(map);
             marker.bindPopup(`<h4>${loc.title}</h4><p>${loc.desc}</p>`);
             
             marker.on('click', () => {
