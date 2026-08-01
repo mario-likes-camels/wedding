@@ -105,17 +105,18 @@
             z-index: 1;
         }
         
-        /* Custom map label pins */
+        /* Custom map label pins with flexible sizing to prevent text clipping */
         .map-badge {
             background: white;
-            padding: 3px 8px;
+            padding: 4px 10px;
             border-radius: 4px;
-            font-size: 0.72rem;
+            font-size: 0.75rem;
             font-family: 'Montserrat', sans-serif;
             font-weight: 600;
             white-space: nowrap;
             box-shadow: 0 2px 6px rgba(0,0,0,0.2);
             border: 1px solid rgba(0,0,0,0.1);
+            display: inline-block;
         }
         .badge-blue { color: #1d4ed8; border-color: #93c5fd; }
         .badge-green { color: #15803d; border-color: #86efac; }
@@ -520,6 +521,22 @@
                 label: "Family Lunch"
             },
             {
+                name: "Fremantle",
+                coords: [-32.0569, 115.7439],
+                title: "Fremantle",
+                desc: "A historic port city full of character, heritage architecture, vibrant weekend markets, and great coffee spots.",
+                type: "green",
+                label: "Fremantle"
+            },
+            {
+                name: "Rottnest Island",
+                coords: [-32.0047, 115.5393],
+                title: "Rottnest Island",
+                desc: "An incredible day trip destination famous for stunning beaches, crystal-clear waters, and friendly local quokkas!",
+                type: "green",
+                label: "Rottnest Island"
+            },
+            {
                 name: "King's Park",
                 coords: [-31.9566, 115.8404],
                 title: "King's Park & Botanic Garden",
@@ -555,8 +572,8 @@
             const customIcon = L.divIcon({
                 className: 'custom-div-icon',
                 html: `<div class="map-badge ${badgeClass}">${loc.label}</div>`,
-                iconSize: [110, 24],
-                iconAnchor: [55, 12]
+                iconSize: [null, null],
+                iconAnchor: [40, 12]
             });
 
             const marker = L.marker(loc.coords, { icon: customIcon }).addTo(map);
