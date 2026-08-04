@@ -6,7 +6,7 @@
     <title>Natasha & Patrick's Wedding</title>
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,400&family=Montserrat:wght@200;300;400&display=swap" rel="stylesheet">
     
-    <!-- Leaflet CSS for actual interactive map tiles -->
+    <!-- Leaflet CSS for interactive map tiles -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
     
     <style>
@@ -27,6 +27,70 @@
         }
         h1, h2, h3 { font-family: 'Cormorant Garamond', serif; font-weight: 300; letter-spacing: 1px; }
         p { font-weight: 300; font-size: 0.95rem; }
+
+        /* Secure Password Screen Styles */
+        .password-screen{
+            position: fixed;
+            inset: 0;
+            background: #f9f8f6;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            padding: 20px;
+        }
+        .password-box{
+            width: 420px;
+            max-width: 90%;
+            background: white;
+            padding: 40px;
+            box-shadow: 0 10px 40px rgba(0,0,0,.08);
+            border-top: 3px solid var(--primary);
+            border-radius: 2px;
+        }
+        .password-box h1 {
+            font-size: 2.2rem;
+            color: var(--primary);
+            margin-bottom: 20px;
+        }
+        .password-box p {
+            margin-bottom: 15px;
+            color: #555;
+        }
+        .password-box input{
+            width: 100%;
+            padding: 14px;
+            border: 1px solid #ddd;
+            border-radius: 2px;
+            font-family: inherit;
+            font-size: 0.95rem;
+            margin: 20px 0 15px 0;
+            background: #fafafa;
+        }
+        .password-box input:focus {
+            outline: none;
+            border-color: var(--primary);
+            background: white;
+        }
+        .password-box button{
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            padding: 14px 30px;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            border-radius: 2px;
+            cursor: pointer;
+            transition: 0.4s;
+            width: 100%;
+        }
+        .password-box button:hover { background-color: #435044; }
+        #passwordError{
+            color: #b00020;
+            font-size: 0.85rem;
+            margin-top: 15px;
+        }
         
         header {
             height: 90vh;
@@ -105,7 +169,6 @@
             z-index: 1;
         }
         
-        /* Custom map label pins with flexible sizing to prevent text clipping */
         .map-badge {
             background: white;
             padding: 4px 10px;
@@ -122,7 +185,6 @@
         .badge-green { color: #15803d; border-color: #86efac; }
         .badge-purple { color: #7e22ce; border-color: #d8b4fe; }
 
-        /* Leaflet popup customization */
         .leaflet-popup-content-wrapper {
             background: #fff;
             border-radius: 2px;
@@ -153,7 +215,6 @@
         .map-info-display h4 { font-family: 'Cormorant Garamond', serif; font-size: 1.4rem; color: var(--primary); margin-bottom: 5px; }
         .map-info-display p { font-size: 0.9rem; color: #555; }
 
-        /* Side-by-Side Timeline Layout */
         .timeline { position: relative; max-width: 950px; margin: 60px auto 0 auto; padding: 20px 0; }
         .timeline::after { content: ''; position: absolute; width: 1px; background-color: var(--primary); top: 0; bottom: 0; left: 50%; opacity: 0.25; }
         
@@ -206,15 +267,16 @@
         input:focus, select:focus, textarea:focus { outline: none; border-color: var(--primary); background: white; }
         textarea { height: 100px; resize: vertical; }
         
-        button {
+        button.main-submit {
             background-color: var(--primary); color: white; border: none; padding: 16px 50px;
             font-size: 0.85rem; text-transform: uppercase; letter-spacing: 2px; border-radius: 2px; cursor: pointer; transition: 0.4s;
+            width: 100%;
         }
-        button:hover { background-color: #435044; letter-spacing: 3px; }
+        button.main-submit:hover { background-color: #435044; letter-spacing: 3px; }
         
         #successMessage { display: none; margin-top: 20px; }
         #successMessage h3 { font-size: 1.8rem; color: var(--primary); margin-bottom: 10px; }
-        .secondary-btn { background-color: transparent; color: var(--primary); border: 1px solid var(--primary); margin-top: 25px; }
+        .secondary-btn { background-color: transparent; color: var(--primary); border: 1px solid var(--primary); margin-top: 25px; width: auto !important; padding: 16px 30px !important; }
         .secondary-btn:hover { background-color: var(--light-taupe); color: #435044; }
 
         @media screen and (max-width: 768px) {
@@ -235,198 +297,213 @@
 </head>
 <body>
 
-    <header>
-        <h1>Natasha & Patrick</h1>
-        <p>Are Getting Married</p>
-        <p style="font-size: 0.9rem; letter-spacing: 2px; margin-top: -15px;">February 20, 2027 • Perth, Australia</p>
-
-        <div class="countdown-container">
-            <div class="countdown-item"><span class="countdown-num" id="days">00</span><span class="countdown-label">Days</span></div>
-            <div class="countdown-item"><span class="countdown-num" id="hours">00</span><span class="countdown-label">Hours</span></div>
-            <div class="countdown-item"><span class="countdown-num" id="minutes">00</span><span class="countdown-label">Mins</span></div>
-            <div class="countdown-item"><span class="countdown-num" id="seconds">00</span><span class="countdown-label">Secs</span></div>
-        </div>
-    </header>
-
-    <!-- THE DETAILS SECTION -->
-    <div class="section">
-        <p style="font-family: 'Cormorant Garamond', serif; font-size: 1.5rem; color: var(--primary); margin-bottom: 25px; font-style: italic; max-width: 700px; margin-left: auto; margin-right: auto;">
-            Whaaaa, that's right! Natasha and Patrick are getting married! What's more -- you're invited! Incredible stuff, much excitement!
-        </p>
-
-        <h2>The Details</h2>
-        <p class="section-subtitle">Join us for the special day</p>
-        <p style="max-width: 650px; margin: 0 auto 30px auto; font-weight: 300;">
-            We can't wait to celebrate our wedding with you in Western Australia. Below is the itinerary and important information for the day.
-        </p>
-
-        <div class="details-grid">
-            <div class="detail-card">
-                <h3>Ceremony</h3>
-                <span class="time">3:00 PM</span>
-                <p><strong>St Mary Star of the Sea</strong><br>Cottesloe, Perth. A traditional church service to begin our next chapter.</p>
-            </div>
-            <div class="detail-card">
-                <h3>Reception</h3>
-                <span class="time">5:30 PM Onwards</span>
-                <p><strong>"Coast" Port Beach</strong><br>Overlooking the waves for dinner, toasts, and dancing.<br><br><em>Note: Free parking is available onsite, but you will need to register your car number plate upon arrival to guarantee it.</em></p>
-            </div>
-            <div class="detail-card">
-                <h3>Accommodation</h3>
-                <span class="time">Where to Stay</span>
-                <p>We recommend booking accommodation around <strong>Scarborough</strong> or <strong>Cottesloe/Fremantle</strong>. Scarborough offers a vibrant beachside strip close to activities and easy coastal transit.</p>
-            </div>
-        </div>
-        <p style="margin-top: 40px; font-weight: 300; font-style: italic;">Further details to follow—keep checking back closer to the time!</p>
-    </div>
-
-    <!-- INTERACTIVE REAL PERTH MAP & WEEKEND GUIDE -->
-    <div class="map-section-wrapper">
-        <div class="map-container-box">
-            <h2>Explore Perth & Weekend Itinerary</h2>
-            <p class="section-subtitle">Click the map pins below to view exact locations, venues, and weekend activities</p>
-            
-            <div id="perthMap"></div>
-
-            <div class="map-info-display" id="mapInfoCard">
-                <h4>Interactive Area Guide</h4>
-                <p>Click any location pin on the interactive map above to view specific details, venue notes, and schedule highlights for the wedding weekend.</p>
-            </div>
+    <!-- SECURE PASSWORD SCREEN -->
+    <div id="passwordScreen" class="password-screen">
+        <div class="password-box">
+            <h1>Oops!</h1>
+            <p>Sorry — we fudged up. We accidentally sent this website to the wrong person, so now we need a password.</p>
+            <p>Please type either the Bride or Groom's last name (not case sensitive).</p>
+            <input id="passwordInput" type="password" placeholder="Last name" autocomplete="off">
+            <button id="unlockBtn">Continue</button>
+            <p id="passwordError"></p>
         </div>
     </div>
 
-    <!-- OUR STORY SECTION -->
-    <div class="section" style="background-color: var(--light-taupe); max-width: 100%;">
-        <h2>Our Story</h2>
-        <p class="section-subtitle">A collection of calculated risks, minor medical emergencies, and street furniture</p>
-        
-        <div class="timeline">
-            
-            <div class="timeline-block">
-                <div class="timeline-text-side">
-                    <div class="timeline-date">2024</div>
-                    <div class="timeline-title">The "Forced" First Date</div>
-                    <p>After connecting on Hinge, Natasha successfully convinced Patrick that a weekend date was already scheduled (definitely was not!) She then turned up fashionably late. But despite the trickery, a great stroll around the lake left them both eager for more. Natasha claimed she was busy and wouldn't be able to see Patrick for at least a week, only to invite him out again literally 24 hours later. They haven't stopped hanging out since, sharing massive, side-splitting laughs whenever they're around each other.</p>
+    <!-- WRAPPED WEBSITE CONTENT -->
+    <div id="website" style="display:none;">
+        <header>
+            <h1>Natasha & Patrick</h1>
+            <p>Are Getting Married</p>
+            <p style="font-size: 0.9rem; letter-spacing: 2px; margin-top: -15px;">February 20, 2027 • Perth, Australia</p>
+
+            <div class="countdown-container">
+                <div class="countdown-item"><span class="countdown-num" id="days">00</span><span class="countdown-label">Days</span></div>
+                <div class="countdown-item"><span class="countdown-num" id="hours">00</span><span class="countdown-label">Hours</span></div>
+                <div class="countdown-item"><span class="countdown-num" id="minutes">00</span><span class="countdown-label">Mins</span></div>
+                <div class="countdown-item"><span class="countdown-num" id="seconds">00</span><span class="countdown-label">Secs</span></div>
+            </div>
+        </header>
+
+        <!-- THE DETAILS SECTION -->
+        <div class="section">
+            <p style="font-family: 'Cormorant Garamond', serif; font-size: 1.5rem; color: var(--primary); margin-bottom: 25px; font-style: italic; max-width: 700px; margin-left: auto; margin-right: auto;">
+                Whaaaa, that's right! Natasha and Patrick are getting married! What's more -- you're invited! Incredible stuff, much excitement!
+            </p>
+
+            <h2>The Details</h2>
+            <p class="section-subtitle">Join us for the special day</p>
+            <p style="max-width: 650px; margin: 0 auto 30px auto; font-weight: 300;">
+                We can't wait to celebrate our wedding with you in Western Australia. Below is the itinerary and important information for the day.
+            </p>
+
+            <div class="details-grid">
+                <div class="detail-card">
+                    <h3>Ceremony</h3>
+                    <span class="time">3:00 PM</span>
+                    <p><strong>St Mary Star of the Sea</strong><br>Cottesloe, Perth. A traditional church service to begin our next chapter.</p>
                 </div>
-                <div class="timeline-img-side">
-                    <div class="timeline-img-container">
-                        <img src="Forced.jpeg" data-story="1" alt="First Date" class="timeline-img img-story1">
-                    </div>
+                <div class="detail-card">
+                    <h3>Reception</h3>
+                    <span class="time">5:30 PM Onwards</span>
+                    <p><strong>"Coast" Port Beach</strong><br>Overlooking the waves for dinner, toasts, and dancing.<br><br><em>Note: Free parking is available onsite, but you will need to register your car number plate upon arrival to guarantee it.</em></p>
+                </div>
+                <div class="detail-card">
+                    <h3>Accommodation</h3>
+                    <span class="time">Where to Stay</span>
+                    <p>We recommend booking accommodation around <strong>Scarborough</strong> or <strong>Cottesloe/Fremantle</strong>. Scarborough offers a vibrant beachside strip close to activities and easy coastal transit.</p>
                 </div>
             </div>
-
-            <div class="timeline-block right-story">
-                <div class="timeline-text-side">
-                    <div class="timeline-date">2024 (Part II)</div>
-                    <div class="timeline-title">The 4th Date Incident</div>
-                    <p>Natasha proposed a low-stakes intro to Patrick's family: watching he and his sister play tennis, then have Patrick cook dinner for them all. A sweet idea, but Patrick's body had other ideas. After maybe a little too much exertion (trying to impress her?) Patrick spent the entire night violently vomiting, leaving Natasha to bond with his sister to a chaotic soundtrack. Undeterred, a few weeks later Natasha returned to the family home again and was won over by their charm. She then took on her greatest challenge: turning Patrick from an alien into a... slightly more normal human. Successfully initiating his social skills training has included teaching him how to drink coffee and properly brew tea (for her).</p>
-                </div>
-                <div class="timeline-img-side">
-                    <div class="timeline-img-container">
-                        <img src="story2.jpeg" data-story="2" alt="The Tennis Incident" class="timeline-img img-story2">
-                    </div>
-                </div>
-            </div>
-
-            <div class="timeline-block left-story">
-                <div class="timeline-text-side">
-                    <div class="timeline-date">2025</div>
-                    <div class="timeline-title">The Melbourne Era</div>
-                    <p>Up for an adventure (for 1-3 years), the couple packed up and moved to Melbourne. While Natasha absolutely tore it up at work, thriving and tackling all the hard stuff, Patrick embraced his destiny as the ideal house-husband. Together, they proudly furnished their apartment entirely with premium treasures found discarded on the street, building a beautiful home and beginning their transition toward something more meaningful.</p>
-                </div>
-                <div class="timeline-img-side">
-                    <div class="timeline-img-container">
-                        <img src="autumn.jpeg" data-story="3" alt="The Melbourne Era" class="timeline-img img-story3">
-                    </div>
-                </div>
-            </div>
-
-            <div class="timeline-block right-story">
-                <div class="timeline-text-side">
-                    <div class="timeline-date">2026</div>
-                    <div class="timeline-title">The Beach Proposal</div>
-                    <p>On a rare sunny Melbourne day, Patrick hijacked a casual beach walk to pop the question. Under an ominous cliff overhang and just moments before they ran into a whole group of nude men letting it all hang out, Patrick pulled out a ring. Natasha, of course, said yes!</p>
-                </div>
-                <div class="timeline-img-side">
-                    <div class="timeline-img-container">
-                        <img src="story3.jpeg" data-story="4" alt="The Beach Proposal" class="timeline-img img-story4">
-                    </div>
-                </div>
-            </div>
-
-            <div class="timeline-block left-story">
-                <div class="timeline-text-side">
-                    <div class="timeline-date">The Future</div>
-                    <div class="timeline-title">The Next Chapter</div>
-                    <p>Natasha is set to ascend even further into her career, while Patrick continues to hone his skills in homemaking... and who knows, maybe even money-making too! In the meantime, the time has come to celebrate the union with our nearest and dearest family.</p>
-                </div>
-                <div class="timeline-img-side">
-                    <div class="timeline-img-container container-story5">
-                        <img src="King_park.jpg" data-story="5" alt="The Future" class="timeline-img img-story5">
-                    </div>
-                </div>
-            </div>
-
+            <p style="margin-top: 40px; font-weight: 300; font-style: italic;">Further details to follow—keep checking back closer to the time!</p>
         </div>
-    </div>
 
-    <!-- RSVP SECTION -->
-    <div class="section">
-        <h2>RSVP</h2>
-        <p class="section-subtitle">Kindly reply by 1 November 2026</p>
-        <div class="rsvp-container">
-            
-        <p class="form-instruction-step" style="text-align: center;">
-            <strong>Dress code:</strong> Coastal cocktail.
-        </p>
-        <p class="form-instruction-step" style="text-align: center;">
-            <strong>A note on gifts:</strong> Please know that should you be able to attend, your presence is more than enough as a present. However for those who wish to contribute towards the couple's future, a wishing well will be available at the reception venue. 
-        </p>
-        <p class="form-instruction-step" style="text-align: center;">
-            <strong>Important:</strong> To help us keep track of numbers and specific dietary needs, <em>please submit a separate form for each individual guest</em> attending.
-        </p>
-
-            <form id="rsvpForm">
-                <input type="text" id="honeypot" style="display:none !important" tabindex="-1" autocomplete="off">
+        <!-- INTERACTIVE REAL PERTH MAP & WEEKEND GUIDE -->
+        <div class="map-section-wrapper">
+            <div class="map-container-box">
+                <h2>Explore Perth & Weekend Itinerary</h2>
+                <p class="section-subtitle">Click the map pins below to view exact locations, venues, and weekend activities</p>
                 
-                <div class="form-group">
-                    <label for="name">Full Name</label>
-                    <input type="text" id="name" required placeholder="Guest's Full Name">
-                </div>
+                <div id="perthMap"></div>
 
-                <div class="form-group">
-                    <label for="email">Email Address</label>
-                    <input type="email" id="email" required placeholder="Guest's Email Address">
+                <div class="map-info-display" id="mapInfoCard">
+                    <h4>Interactive Area Guide</h4>
+                    <p>Click any location pin on the interactive map above to view specific details, venue notes, and schedule highlights for the wedding weekend.</p>
                 </div>
-                
-                <div class="form-group">
-                    <label for="attending">Will this guest attend?</label>
-                    <select id="attending" required>
-                        <option value="" disabled selected>Select an option</option>
-                        <option value="Yes">Accept</option>
-                        <option value="No">Decline</option>
-                    </select>
-                </div>
-                
-                <div class="form-group">
-                    <label for="dietary">Dietary Restrictions</label>
-                    <input type="text" id="dietary" placeholder="e.g., None, Vegetarian, Gluten Free">
-                </div>
-
-                <div class="form-group">
-                    <label for="notes">Notes / Message for the couple</label>
-                    <textarea id="notes" placeholder="Write any extra messages or song suggestions here..."></textarea>
-                </div>
-                
-                <button type="submit" id="submitBtn">Submit RSVP</button>
-            </form>
-
-            <div id="successMessage">
-                <h3>Thank You!</h3>
-                <p>The RSVP has been successfully logged into our spreadsheet.</p>
-                <button type="button" class="secondary-btn" id="anotherBtn">RSVP for Another Guest</button>
             </div>
+        </div>
 
+        <!-- OUR STORY SECTION -->
+        <div class="section" style="background-color: var(--light-taupe); max-width: 100%;">
+            <h2>Our Story</h2>
+            <p class="section-subtitle">A collection of calculated risks, minor medical emergencies, and street furniture</p>
+            
+            <div class="timeline">
+                
+                <div class="timeline-block">
+                    <div class="timeline-text-side">
+                        <div class="timeline-date">2024</div>
+                        <div class="timeline-title">The "Forced" First Date</div>
+                        <p>After connecting on Hinge, Natasha successfully convinced Patrick that a weekend date was already scheduled (definitely was not!) She then turned up fashionably late. But despite the trickery, a great stroll around the lake left them both eager for more. Natasha claimed she was busy and wouldn't be able to see Patrick for at least a week, only to invite him out again literally 24 hours later. They haven't stopped hanging out since, sharing massive, side-splitting laughs whenever they're around each other.</p>
+                    </div>
+                    <div class="timeline-img-side">
+                        <div class="timeline-img-container">
+                            <img src="Forced.jpeg" data-story="1" alt="First Date" class="timeline-img img-story1">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="timeline-block right-story">
+                    <div class="timeline-text-side">
+                        <div class="timeline-date">2024 (Part II)</div>
+                        <div class="timeline-title">The 4th Date Incident</div>
+                        <p>Natasha proposed a low-stakes intro to Patrick's family: watching he and his sister play tennis, then have Patrick cook dinner for them all. A sweet idea, but Patrick's body had other ideas. After maybe a little too much exertion (trying to impress her?) Patrick spent the entire night violently vomiting, leaving Natasha to bond with his sister to a chaotic soundtrack. Undeterred, a few weeks later Natasha returned to the family home again and was won over by their charm. She then took on her greatest challenge: turning Patrick from an alien into a... slightly more normal human. Successfully initiating his social skills training has included teaching him how to drink coffee and properly brew tea (for her).</p>
+                    </div>
+                    <div class="timeline-img-side">
+                        <div class="timeline-img-container">
+                            <img src="story2.jpeg" data-story="2" alt="The Tennis Incident" class="timeline-img img-story2">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="timeline-block left-story">
+                    <div class="timeline-text-side">
+                        <div class="timeline-date">2025</div>
+                        <div class="timeline-title">The Melbourne Era</div>
+                        <p>Up for an adventure (for 1-3 years), the couple packed up and moved to Melbourne. While Natasha absolutely tore it up at work, thriving and tackling all the hard stuff, Patrick embraced his destiny as the ideal house-husband. Together, they proudly furnished their apartment entirely with premium treasures found discarded on the street, building a beautiful home and beginning their transition toward something more meaningful.</p>
+                    </div>
+                    <div class="timeline-img-side">
+                        <div class="timeline-img-container">
+                            <img src="autumn.jpeg" data-story="3" alt="The Melbourne Era" class="timeline-img img-story3">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="timeline-block right-story">
+                    <div class="timeline-text-side">
+                        <div class="timeline-date">2026</div>
+                        <div class="timeline-title">The Beach Proposal</div>
+                        <p>On a rare sunny Melbourne day, Patrick hijacked a casual beach walk to pop the question. Under an ominous cliff overhang and just moments before they ran into a whole group of nude men letting it all hang out, Patrick pulled out a ring. Natasha, of course, said yes!</p>
+                    </div>
+                    <div class="timeline-img-side">
+                        <div class="timeline-img-container">
+                            <img src="story3.jpeg" data-story="4" alt="The Beach Proposal" class="timeline-img img-story4">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="timeline-block left-story">
+                    <div class="timeline-text-side">
+                        <div class="timeline-date">The Future</div>
+                        <div class="timeline-title">The Next Chapter</div>
+                        <p>Natasha is set to ascend even further into her career, while Patrick continues to hone his skills in homemaking... and who knows, maybe even money-making too! In the meantime, the time has come to celebrate the union with our nearest and dearest family.</p>
+                    </div>
+                    <div class="timeline-img-side">
+                        <div class="timeline-img-container container-story5">
+                            <img src="King_park.jpg" data-story="5" alt="The Future" class="timeline-img img-story5">
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- RSVP SECTION -->
+        <div class="section">
+            <h2>RSVP</h2>
+            <p class="section-subtitle">Kindly reply by 1 November 2026</p>
+            <div class="rsvp-container">
+                
+                <p class="form-instruction-step" style="text-align: center;">
+                    <strong>Dress code:</strong> Coastal cocktail.
+                </p>
+                <p class="form-instruction-step" style="text-align: center;">
+                    <strong>A note on gifts:</strong> Please know that should you be able to attend, your presence is more than enough as a present. However for those who wish to contribute towards the couple's future, a wishing well will be available at the reception venue. 
+                </p>
+                <p class="form-instruction-step" style="text-align: center;">
+                    <strong>Important:</strong> To help us keep track of numbers and specific dietary needs, <em>please submit a separate form for each individual guest</em> attending.
+                </p>
+
+                <form id="rsvpForm">
+                    <input type="text" id="honeypot" style="display:none !important" tabindex="-1" autocomplete="off">
+                    
+                    <div class="form-group">
+                        <label for="name">Full Name</label>
+                        <input type="text" id="name" required placeholder="Guest's Full Name">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="email">Email Address</label>
+                        <input type="email" id="email" required placeholder="Guest's Email Address">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="attending">Will this guest attend?</label>
+                        <select id="attending" required>
+                            <option value="" disabled selected>Select an option</option>
+                            <option value="Yes">Accept</option>
+                            <option value="No">Decline</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="dietary">Dietary Restrictions</label>
+                        <input type="text" id="dietary" placeholder="e.g., None, Vegetarian, Gluten Free">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="notes">Notes / Message for the couple</label>
+                        <textarea id="notes" placeholder="Write any extra messages or song suggestions here..."></textarea>
+                    </div>
+                    
+                    <button type="submit" id="submitBtn" class="main-submit">Submit RSVP</button>
+                </form>
+
+                <div id="successMessage">
+                    <h3>Thank You!</h3>
+                    <p>The RSVP has been successfully logged into our spreadsheet.</p>
+                    <button type="button" class="secondary-btn" id="anotherBtn">RSVP for Another Guest</button>
+                </div>
+
+            </div>
         </div>
     </div>
 
@@ -435,6 +512,45 @@
 
     <script>
         const GOOGLE_API_URL = "https://script.google.com/macros/s/AKfycbwj2AArOlD_bTzLRaJ-oOQyYa36ntffiWgbgj6nHfXT7v6ahvje8a7-GelDVpcGv_sfGQ/exec";
+
+        // SECURE PASSWORD LOGIC
+        const website = document.getElementById("website");
+        const passwordScreen = document.getElementById("passwordScreen");
+
+        document.getElementById("unlockBtn").addEventListener("click", checkPassword);
+        document.getElementById("passwordInput").addEventListener("keypress", (e) => {
+            if (e.key === 'Enter') checkPassword();
+        });
+
+        async function checkPassword(){
+            const password = document.getElementById("passwordInput").value.trim();
+            const errorElement = document.getElementById("passwordError");
+            errorElement.innerText = "Checking...";
+
+            try {
+                const response = await fetch(GOOGLE_API_URL, {
+                    method: "POST",
+                    headers: { "Content-Type": "text/plain;charset=utf-8" },
+                    body: JSON.stringify({
+                        action: "checkPassword",
+                        password: password
+                    })
+                });
+
+                const result = await response.json();
+
+                if(result.success){
+                    passwordScreen.style.display = "none";
+                    website.style.display = "block";
+                    setTimeout(() => { window.dispatchEvent(new Event('resize')); }, 200);
+                } else {
+                    errorElement.innerText = "Sorry, that's not the correct surname.";
+                }
+            } catch (error) {
+                console.error(error);
+                errorElement.innerText = "Network error. Please try again.";
+            }
+        }
 
         // 1. LIVE COUNTDOWN TIMER LOGIC
         const targetDate = new Date("February 20, 2027 16:00:00").getTime();
@@ -467,7 +583,6 @@
             attribution: '&copy; <a href="https://carto.com/">CARTO</a>'
         }).addTo(map);
 
-        // Accommodation Zone Polygon spanning from Cottesloe up through Scarborough and North Beach coastline
         const accommodationZoneCoords = [
             [-32.0150, 115.7450], 
             [-31.9967, 115.7400], 
