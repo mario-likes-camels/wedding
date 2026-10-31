@@ -1,9 +1,12 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Natasha & Patrick's Wedding</title>
+    
+    <!-- Clean Google Fonts Link -->
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,400&family=Montserrat:wght@200;300;400&display=swap" rel="stylesheet">
     
     <style>
@@ -289,7 +292,7 @@
         <div class="events-grid">
             <div class="detail-card">
                 <h3>Welcome Drinks & Barefoot Bowls</h3>
-                <p>Thursday 18 February</p>
+                <p>Thursday 17 February</p>
                 <span class="time">From 5:30 PM</span>
                 <p><strong>Scarborough Sports and Community Club</strong><br>75 Deanmore Road, Scarborough.<br><br>Join us for welcome drinks and barefoot bowls before the big day. Nibbles will be provided and dinner will be available for purchase.</p>
             </div>
@@ -305,11 +308,11 @@
                 <h3>Reception</h3>
                 <p>Saturday 20 February</p>
                 <span class="time">From 5:30 PM</span>
-                <p><strong>"Coast" Port Beach</strong><br>42 Port Beach Road, North Fremantle.<br><br>Join us for dinner, speeches, dancing and sunset views over the ocean.<br><em>Free parking is available onsite. Please register your vehicle number plate upon arrival.</em></p>
+                <p><strong>COAST</strong><br>42 Port Beach Road, North Fremantle.<br><br>Join us for dinner, speeches, dancing and sunset views over the ocean.<br><em>Free parking is available onsite. Please register your vehicle number plate upon arrival.</em></p>
             </div>
         </div>
 
-        <!-- Accommodation always centered on a new line -->
+        <!-- Accommodation centered on its own line -->
         <div class="accommodation-wrapper">
             <div class="detail-card">
                 <h3>Accommodation</h3>
@@ -368,10 +371,9 @@
             </div>
 
             <div class="timeline-block right-story">
-                <div class="timeline-text-side">
-                    <div class="timeline-date">2026</div>
-                    <div class="timeline-title">The Beach Proposal</div>
-                    <p>On a rare sunny Melbourne day, Patrick hijacked a casual beach walk to pop the question. Under an ominous cliff overhang and just moments before they ran into a whole group of nude men letting it all hang out, Patrick pulled out a ring. Natasha, of course, said yes!</p>
+                <div class="timeline-date">2026</div>
+                <div class="timeline-title">The Beach Proposal</div>
+                <p>On a rare sunny Melbourne day, Patrick hijacked a casual beach walk to pop the question. Under an ominous cliff overhang and just moments before they ran into a whole group of nude men letting it all hang out, Patrick pulled out a ring. Natasha, of course, said yes!</p>
                 </div>
                 <div class="timeline-img-side">
                     <div class="timeline-img-container">
@@ -458,6 +460,7 @@
 </div>
 
 <script>
+    // Direct string constant for Google Apps Script endpoint
     const GOOGLE_API_URL = "https://script.google.com/macros/s/AKfycbwvB19SGa0q5nvl6nC50HA8KLoKFNxWxrRUC28s2oi7CxIIOIbyHe7Sr4AHIaImvYHoXg/exec";
 
     // SECURE PASSWORD LOGIC
@@ -489,7 +492,6 @@
             if(result.success){
                 passwordScreen.style.display = "none";
                 website.style.display = "block";
-                setTimeout(() => { window.dispatchEvent(new Event('resize')); }, 200);
             } else {
                 errorElement.innerText = "Sorry, that's not the correct surname.";
             }
