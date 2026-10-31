@@ -6,294 +6,246 @@
     <title>Natasha & Patrick's Wedding</title>
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,400&family=Montserrat:wght@200;300;400&display=swap" rel="stylesheet">
     
-    <!-- Leaflet CSS for interactive map tiles -->
-<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
+    <style>
+        :root {
+            --primary: #5a6b5c; 
+            --bg: #f9f8f6;      
+            --text: #2c3e35;    
+            --light-taupe: #f0ede9;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            line-height: 1.8;
+            text-align: center;
+            overflow-x: hidden;
+        }
+        h1, h2, h3 { font-family: 'Cormorant Garamond', serif; font-weight: 300; letter-spacing: 1px; }
+        p { font-weight: 300; font-size: 0.95rem; }
 
-<style>
-    :root {
-        --primary: #5a6b5c; 
-        --bg: #f9f8f6;      
-        --text: #2c3e35;    
-        --light-taupe: #f0ede9;
-    }
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    body {
-        font-family: 'Montserrat', sans-serif;
-        background-color: var(--bg);
-        color: var(--text);
-        line-height: 1.8;
-        text-align: center;
-        overflow-x: hidden;
-    }
-    h1, h2, h3 { font-family: 'Cormorant Garamond', serif; font-weight: 300; letter-spacing: 1px; }
-    p { font-weight: 300; font-size: 0.95rem; }
+        /* Secure Password Screen Styles */
+        .password-screen {
+            position: fixed;
+            inset: 0;
+            background: #f9f8f6;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            padding: 20px;
+        }
+        .password-box {
+            width: 420px;
+            max-width: 90%;
+            background: white;
+            padding: 40px;
+            box-shadow: 0 10px 40px rgba(0,0,0,.08);
+            border-top: 3px solid var(--primary);
+            border-radius: 2px;
+        }
+        .password-box h1 {
+            font-size: 2.2rem;
+            color: var(--primary);
+            margin-bottom: 20px;
+        }
+        .password-box p {
+            margin-bottom: 15px;
+            color: #555;
+        }
+        .password-box input {
+            width: 100%;
+            padding: 14px;
+            border: 1px solid #ddd;
+            border-radius: 2px;
+            font-family: inherit;
+            font-size: 0.95rem;
+            margin: 20px 0 15px 0;
+            background: #fafafa;
+        }
+        .password-box input:focus {
+            outline: none;
+            border-color: var(--primary);
+            background: white;
+        }
+        .password-box button {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            padding: 14px 30px;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            border-radius: 2px;
+            cursor: pointer;
+            transition: 0.4s;
+            width: 100%;
+        }
+        .password-box button:hover { background-color: #435044; }
+        #passwordError {
+            color: #b00020;
+            font-size: 0.85rem;
+            margin-top: 15px;
+        }
 
-    /* Secure Password Screen Styles */
-    .password-screen{
-        position: fixed;
-        inset: 0;
-        background: #f9f8f6;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        z-index: 9999;
-        padding: 20px;
-    }
-    .password-box{
-        width: 420px;
-        max-width: 90%;
-        background: white;
-        padding: 40px;
-        box-shadow: 0 10px 40px rgba(0,0,0,.08);
-        border-top: 3px solid var(--primary);
-        border-radius: 2px;
-    }
-    .password-box h1 {
-        font-size: 2.2rem;
-        color: var(--primary);
-        margin-bottom: 20px;
-    }
-    .password-box p {
-        margin-bottom: 15px;
-        color: #555;
-    }
-    .password-box input{
-        width: 100%;
-        padding: 14px;
-        border: 1px solid #ddd;
-        border-radius: 2px;
-        font-family: inherit;
-        font-size: 0.95rem;
-        margin: 20px 0 15px 0;
-        background: #fafafa;
-    }
-    .password-box input:focus {
-        outline: none;
-        border-color: var(--primary);
-        background: white;
-    }
-    .password-box button{
-        background-color: var(--primary);
-        color: white;
-        border: none;
-        padding: 14px 30px;
-        font-size: 0.85rem;
-        text-transform: uppercase;
-        letter-spacing: 2px;
-        border-radius: 2px;
-        cursor: pointer;
-        transition: 0.4s;
-        width: 100%;
-    }
-    .password-box button:hover { background-color: #435044; }
-    #passwordError{
-        color: #b00020;
-        font-size: 0.85rem;
-        margin-top: 15px;
-    }
+        /* Header Styles */
+        header {
+            height: 90vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            background: linear-gradient(rgba(249, 248, 246, 0.45), rgba(249, 248, 246, 0.45)), 
+                        url('No_Water_Mark.jpeg') no-repeat center center/cover;
+            background-attachment: fixed;
+            background-position: center 25%; 
+        }
+        header h1 { font-size: 4.5rem; color: var(--primary); margin-bottom: 10px; z-index: 2; }
+        header p { font-size: 1.1rem; letter-spacing: 4px; text-transform: uppercase; margin-bottom: 30px; z-index: 2; }
 
-    header {
-        height: 90vh;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        padding: 20px;
-        background: linear-gradient(rgba(249, 248, 246, 0.45), rgba(249, 248, 246, 0.45)), 
-                    url('No_Water_Mark.jpeg') no-repeat center center/cover;
-        background-attachment: fixed;
-        background-position: center 25%; 
-    }
-    header h1 { font-size: 4.5rem; color: var(--primary); margin-bottom: 10px; z-index: 2; }
-    header p { font-size: 1.1rem; letter-spacing: 4px; text-transform: uppercase; margin-bottom: 30px; z-index: 2; }
+        .countdown-container {
+            display: flex;
+            gap: 25px;
+            margin-top: 20px;
+            background: rgba(255, 255, 255, 0.6);
+            padding: 20px 40px;
+            border-radius: 2px;
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(255,255,255,0.5);
+            z-index: 2;
+        }
+        .countdown-item { display: flex; flex-direction: column; align-items: center; }
+        .countdown-num { font-family: 'Cormorant Garamond', serif; font-size: 2.5rem; color: var(--primary); font-weight: 400; }
+        .countdown-label { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 2px; opacity: 0.8; }
 
-    .countdown-container {
-        display: flex;
-        gap: 25px;
-        margin-top: 20px;
-        background: rgba(255, 255, 255, 0.6);
-        padding: 20px 40px;
-        border-radius: 2px;
-        backdrop-filter: blur(5px);
-        border: 1px solid rgba(255,255,255,0.5);
-        z-index: 2;
-    }
-    .countdown-item { display: flex; flex-direction: column; align-items: center; }
-    .countdown-num { font-family: 'Cormorant Garamond', serif; font-size: 2.5rem; color: var(--primary); font-weight: 400; }
-    .countdown-label { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 2px; opacity: 0.8; }
+        /* General Section Styles */
+        .section { padding: 100px 20px; max-width: 1000px; margin: 0 auto; }
+        .section h2 { font-size: 2.8rem; margin-bottom: 15px; color: var(--primary); position: relative; display: inline-block;}
+        .section h2::after {
+            content: ''; display: block; width: 50px; height: 1px; background: var(--primary); margin: 15px auto 0 auto; opacity: 0.5;
+        }
+        .section-subtitle { font-style: italic; font-family: 'Cormorant Garamond', serif; font-size: 1.3rem; margin-bottom: 40px; opacity: 0.8;}
 
-    .section { padding: 100px 20px; max-width: 900px; margin: 0 auto; }
-    .section h2 { font-size: 2.8rem; margin-bottom: 15px; color: var(--primary); position: relative; display: inline-block;}
-    .section h2::after {
-        content: ''; display: block; width: 50px; height: 1px; background: var(--primary); margin: 15px auto 0 auto; opacity: 0.5;
-    }
-    .section-subtitle { font-style: italic; font-family: 'Cormorant Garamond', serif; font-size: 1.3rem; margin-bottom: 40px; opacity: 0.8;}
+        /* Event Cards Grid */
+        .events-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+            text-align: left;
+        }
+        @media (min-width: 850px) {
+            .events-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+        
+        .accommodation-wrapper {
+            display: flex;
+            justify-content: center;
+            margin-top: 30px;
+            text-align: left;
+        }
+        .accommodation-wrapper .detail-card {
+            width: 100%;
+            max-width: 600px;
+        }
 
-    /* Event Cards Grid */
-    .details-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-        gap: 30px;
-        margin-top: 40px;
-        text-align: left;
-    }
-    .detail-card {
-        background: white;
-        padding: 30px;
-        border-radius: 2px;
-        box-shadow: 0 10px 30px rgba(0,0,0,0.02);
-        border-top: 3px solid var(--primary);
-    }
-    .detail-card h3 { font-size: 1.5rem; color: var(--primary); margin-bottom: 10px; }
-    .detail-card .time { font-family: 'Cormorant Garamond', serif; font-size: 1.1rem; font-weight: 600; color: #435044; margin-bottom: 15px; display: block; }
-    .detail-card p { font-size: 0.9rem; color: #555; }
+        .detail-card {
+            background: white;
+            padding: 30px;
+            border-radius: 2px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.02);
+            border-top: 3px solid var(--primary);
+        }
+        .detail-card h3 { font-size: 1.5rem; color: var(--primary); margin-bottom: 10px; }
+        .detail-card .time { font-family: 'Cormorant Garamond', serif; font-size: 1.1rem; font-weight: 600; color: #435044; margin-bottom: 15px; display: block; }
+        .detail-card p { font-size: 0.9rem; color: #555; }
 
-    /* Interactive Real Map Section */
-    .map-section-wrapper {
-        background-color: var(--light-taupe);
-        padding: 100px 20px;
-        width: 100%;
-    }
-    .map-container-box {
-        max-width: 950px;
-        margin: 0 auto;
-        background: white;
-        padding: 30px;
-        border-radius: 2px;
-        box-shadow: 0 10px 30px rgba(0,0,0,0.03);
-    }
-    #perthMap {
-        width: 100%;
-        height: 500px;
-        border-radius: 2px;
-        z-index: 1;
-    }
+        /* Timeline Styles */
+        .timeline { position: relative; max-width: 950px; margin: 60px auto 0 auto; padding: 20px 0; }
+        .timeline::after { content: ''; position: absolute; width: 1px; background-color: var(--primary); top: 0; bottom: 0; left: 50%; opacity: 0.25; }
 
-    .map-badge {
-        background: white;
-        padding: 4px 10px;
-        border-radius: 4px;
-        font-size: 0.75rem;
-        font-family: 'Montserrat', sans-serif;
-        font-weight: 600;
-        white-space: nowrap;
-        box-shadow: 0 2px 6px rgba(0,0,0,0.2);
-        border: 1px solid rgba(0,0,0,0.1);
-        display: inline-block;
-    }
-    .badge-blue { color: #1d4ed8; border-color: #93c5fd; }
-    .badge-green { color: #15803d; border-color: #86efac; }
-    .badge-purple { color: #7e22ce; border-color: #d8b4fe; }
+        .timeline-block {
+            display: flex; position: relative; margin-bottom: 80px; width: 100%; align-items: center;
+            opacity: 0; transform: translateY(40px); transition: all 1s ease;
+        }
+        .timeline-block.visible { opacity: 1; transform: translateY(0); }
 
-    .leaflet-popup-content-wrapper {
-        background: #fff;
-        border-radius: 2px;
-        font-family: 'Montserrat', sans-serif;
-        color: var(--text);
-        box-shadow: 0 4px 20px rgba(0,0,0,0.08);
-    }
-    .leaflet-popup-content h4 {
-        font-family: 'Cormorant Garamond', serif;
-        font-size: 1.3rem;
-        color: var(--primary);
-        margin-bottom: 5px;
-    }
-    .leaflet-popup-content p {
-        font-size: 0.85rem;
-        color: #555;
-        font-weight: 300;
-    }
+        .timeline-block::after {
+            content: ''; position: absolute; width: 10px; height: 10px; left: 50%; background-color: var(--bg);
+            border: 1px solid var(--primary); top: 25px; margin-left: -5px; border-radius: 50%; z-index: 1;
+        }
 
-    .map-info-display {
-        margin-top: 25px;
-        padding: 25px;
-        background: #faf8f5;
-        border-left: 3px solid var(--primary);
-        text-align: left;
-        min-height: 110px;
-    }
-    .map-info-display h4 { font-family: 'Cormorant Garamond', serif; font-size: 1.4rem; color: var(--primary); margin-bottom: 5px; }
-    .map-info-display p { font-size: 0.9rem; color: #555; }
+        .timeline-text-side, .timeline-img-side { width: 50%; padding: 0 45px; }
+        .timeline-text-side { text-align: right; }
+        .timeline-block.right-story { flex-direction: row-reverse; }
+        .timeline-block.right-story .timeline-text-side { text-align: left; }
 
-    .timeline { position: relative; max-width: 950px; margin: 60px auto 0 auto; padding: 20px 0; }
-    .timeline::after { content: ''; position: absolute; width: 1px; background-color: var(--primary); top: 0; bottom: 0; left: 50%; opacity: 0.25; }
+        .timeline-date { font-family: 'Cormorant Garamond', serif; font-size: 1.6rem; color: var(--primary); margin-bottom: 5px; font-weight: 600;}
+        .timeline-title { font-size: 0.9rem; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 8px; font-weight: 400; color: #435044;}
 
-    .timeline-block {
-        display: flex; position: relative; margin-bottom: 80px; width: 100%; align-items: center;
-        opacity: 0; transform: translateY(40px); transition: all 1s ease;
-    }
-    .timeline-block.visible { opacity: 1; transform: translateY(0); }
+        .timeline-img-container { 
+            width: 100%; 
+            max-height: 520px; 
+            overflow: hidden; 
+            border-radius: 3px; 
+            box-shadow: 0 4px 20px rgba(0,0,0,0.06); 
+        }
+        .timeline-img { width: 100%; height: 100%; object-fit: cover; }
 
-    .timeline-block::after {
-        content: ''; position: absolute; width: 10px; height: 10px; left: 50%; background-color: var(--bg);
-        border: 1px solid var(--primary); top: 25px; margin-left: -5px; border-radius: 50%; z-index: 1;
-    }
+        .img-story1 { object-position: center bottom; }
+        .img-story2 { object-position: center bottom; }
+        .img-story3 { object-position: center center; }
+        .img-story4 { object-position: center bottom; }
+        .container-story5 { max-height: 600px !important; } 
+        .img-story5 { object-position: center bottom; }
 
-    .timeline-text-side, .timeline-img-side { width: 50%; padding: 0 45px; }
-    .timeline-text-side { text-align: right; }
-    .timeline-block.right-story { flex-direction: row-reverse; }
-    .timeline-block.right-story .timeline-text-side { text-align: left; }
+        /* Form Styling */
+        .rsvp-container {
+            background: white; padding: 50px 40px; border-radius: 2px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.02); max-width: 550px; margin: 0 auto;
+        }
+        .form-instruction-step { font-size: 0.9rem; margin-bottom: 20px; color: #666; font-style: italic; text-align: left; }
+        .form-group { text-align: left; margin-bottom: 25px; }
+        .form-group label { display: block; font-size: 0.8rem; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 1.5px;}
+        input, select, textarea {
+            width: 100%; padding: 14px; border: 1px solid #ddd; border-radius: 2px; font-family: inherit; font-size: 0.95rem; font-weight: 200; background: #fafafa; transition: 0.3s;
+        }
+        input:focus, select:focus, textarea:focus { outline: none; border-color: var(--primary); background: white; }
+        textarea { height: 100px; resize: vertical; }
 
-    .timeline-date { font-family: 'Cormorant Garamond', serif; font-size: 1.6rem; color: var(--primary); margin-bottom: 5px; font-weight: 600;}
-    .timeline-title { font-size: 0.9rem; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 8px; font-weight: 400; color: #435044;}
+        button.main-submit {
+            background-color: var(--primary); color: white; border: none; padding: 16px 50px;
+            font-size: 0.85rem; text-transform: uppercase; letter-spacing: 2px; border-radius: 2px; cursor: pointer; transition: 0.4s;
+            width: 100%;
+        }
+        button.main-submit:hover { background-color: #435044; letter-spacing: 3px; }
 
-    .timeline-img-container { 
-        width: 100%; 
-        max-height: 520px; 
-        overflow: hidden; 
-        border-radius: 3px; 
-        box-shadow: 0 4px 20px rgba(0,0,0,0.06); 
-    }
-    .timeline-img { width: 100%; height: 100%; object-fit: cover; }
+        #successMessage { display: none; margin-top: 20px; }
+        #successMessage h3 { font-size: 1.8rem; color: var(--primary); margin-bottom: 10px; }
+        .secondary-btn { background-color: transparent; color: var(--primary); border: 1px solid var(--primary); margin-top: 25px; width: auto !important; padding: 16px 30px !important; }
+        .secondary-btn:hover { background-color: var(--light-taupe); color: #435044; }
 
-    .img-story1 { object-position: center bottom; }
-    .img-story2 { object-position: center bottom; }
-    .img-story3 { object-position: center center; }
-    .img-story4 { object-position: center bottom; }
-    .container-story5 { max-height: 600px !important; } 
-    .img-story5 { object-position: center bottom; }
+        @media screen and (max-width: 768px) {
+            header { background-size: 115% auto; background-position: center 20%; }
+            header h1 { font-size: 3.2rem; }
+            .countdown-container { gap: 15px; padding: 15px 25px; }
+            .countdown-num { font-size: 1.8rem; }
 
-    /* Form Styling */
-    .rsvp-container {
-        background: white; padding: 50px 40px; border-radius: 2px;
-        box-shadow: 0 10px 30px rgba(0,0,0,0.02); max-width: 550px; margin: 0 auto;
-    }
-    .form-instruction-step { font-size: 0.9rem; margin-bottom: 20px; color: #666; font-style: italic; text-align: left; }
-    .form-group { text-align: left; margin-bottom: 25px; }
-    .form-group label { display: block; font-size: 0.8rem; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 1.5px;}
-    input, select, textarea {
-        width: 100%; padding: 14px; border: 1px solid #ddd; border-radius: 2px; font-family: inherit; font-size: 0.95rem; font-weight: 200; background: #fafafa; transition: 0.3s;
-    }
-    input:focus, select:focus, textarea:focus { outline: none; border-color: var(--primary); background: white; }
-    textarea { height: 100px; resize: vertical; }
+            .timeline::after { left: 20px; }
+            .timeline-block { flex-direction: column !important; margin-bottom: 40px; }
+            .timeline-block::after { left: 20px; margin-left: -5px; top: 25px; }
 
-    button.main-submit {
-        background-color: var(--primary); color: white; border: none; padding: 16px 50px;
-        font-size: 0.85rem; text-transform: uppercase; letter-spacing: 2px; border-radius: 2px; cursor: pointer; transition: 0.4s;
-        width: 100%;
-    }
-    button.main-submit:hover { background-color: #435044; letter-spacing: 3px; }
-
-    #successMessage { display: none; margin-top: 20px; }
-    #successMessage h3 { font-size: 1.8rem; color: var(--primary); margin-bottom: 10px; }
-    .secondary-btn { background-color: transparent; color: var(--primary); border: 1px solid var(--primary); margin-top: 25px; width: auto !important; padding: 16px 30px !important; }
-    .secondary-btn:hover { background-color: var(--light-taupe); color: #435044; }
-
-    @media screen and (max-width: 768px) {
-        header { background-size: 115% auto; background-position: center 20%; }
-        header h1 { font-size: 3.2rem; }
-        .countdown-container { gap: 15px; padding: 15px 25px; }
-        .countdown-num { font-size: 1.8rem; }
-
-        .timeline::after { left: 20px; }
-        .timeline-block { flex-direction: column !important; margin-bottom: 40px; }
-        .timeline-block::after { left: 20px; margin-left: -5px; top: 25px; }
-
-        .timeline-text-side, .timeline-img-side { width: 100%; padding-left: 45px; padding-right: 15px; text-align: left !important; }
-        .timeline-img-container { max-height: 420px; margin-top: 15px; } 
-        .container-story5 { max-height: 480px !important; } 
-    }
-</style>
+            .timeline-text-side, .timeline-img-side { width: 100%; padding-left: 45px; padding-right: 15px; text-align: left !important; }
+            .timeline-img-container { max-height: 420px; margin-top: 15px; } 
+            .container-story5 { max-height: 480px !important; } 
+        }
+    </style>
+</head>
+<body>
 
 <!-- SECURE PASSWORD SCREEN -->
 <div id="passwordScreen" class="password-screen">
@@ -333,47 +285,40 @@
             We can't wait to celebrate our wedding with you in Western Australia. Below you'll find the schedule for the wedding weekend along with venue and accommodation information.
         </p>
 
-        <div class="details-grid">
+        <!-- 3-Column Top Grid -->
+        <div class="events-grid">
             <div class="detail-card">
                 <h3>Welcome Drinks & Barefoot Bowls</h3>
-                <p>Thursday 17 February</p>
+                <p>Thursday 18 February</p>
                 <span class="time">From 5:30 PM</span>
                 <p><strong>Scarborough Sports and Community Club</strong><br>75 Deanmore Road, Scarborough.<br><br>Join us for welcome drinks and barefoot bowls before the big day. Nibbles will be provided and dinner will be available for purchase.</p>
             </div>
+            
             <div class="detail-card">
                 <h3>Ceremony</h3>
                 <p>Saturday 20 February</p>
                 <span class="time">3:30 PM</span>
                 <p><strong>St Mary Star of the Sea</strong><br>Cottesloe, Perth.<br><br>A traditional church service to begin our next chapter.<br><em>Please be seated by 3:15pm as we prepare for our ceremony to begin at 3:30pm.</em></p>
             </div>
+            
             <div class="detail-card">
                 <h3>Reception</h3>
                 <p>Saturday 20 February</p>
                 <span class="time">From 5:30 PM</span>
                 <p><strong>"Coast" Port Beach</strong><br>42 Port Beach Road, North Fremantle.<br><br>Join us for dinner, speeches, dancing and sunset views over the ocean.<br><em>Free parking is available onsite. Please register your vehicle number plate upon arrival.</em></p>
             </div>
+        </div>
+
+        <!-- Accommodation always centered on a new line -->
+        <div class="accommodation-wrapper">
             <div class="detail-card">
                 <h3>Accommodation</h3>
                 <span class="time">Where to Stay</span>
                 <p>We recommend staying in <strong>Scarborough</strong>, <strong>Cottesloe</strong> or <strong>Fremantle</strong>. Each offers fantastic coastal accommodation options and convenient access to the wedding events throughout the weekend.</p>
             </div>
         </div>
+
         <p style="margin-top: 40px; font-weight: 300; font-style: italic;">Further details to follow—keep checking back closer to the time!</p>
-    </div>
-
-    <!-- INTERACTIVE REAL PERTH MAP & WEEKEND GUIDE -->
-    <div class="map-section-wrapper">
-        <div class="map-container-box">
-            <h2>Explore Perth & Wedding Weekend Guide</h2>
-            <p class="section-subtitle">Click the map pins below to view exact locations, venues, and weekend activities</p>
-
-            <div id="perthMap"></div>
-
-            <div class="map-info-display" id="mapInfoCard">
-                <h4>Interactive Area Guide</h4>
-                <p>Click any location pin on the interactive map above to view specific details, venue notes, and schedule highlights for the wedding weekend.</p>
-            </div>
-        </div>
     </div>
 
     <!-- OUR STORY SECTION -->
@@ -512,9 +457,6 @@
     </div>
 </div>
 
-<!-- Leaflet JS -->
-<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
-
 <script>
     const GOOGLE_API_URL = "https://script.google.com/macros/s/AKfycbwvB19SGa0q5nvl6nC50HA8KLoKFNxWxrRUC28s2oi7CxIIOIbyHe7Sr4AHIaImvYHoXg/exec";
 
@@ -580,131 +522,7 @@
         document.getElementById("seconds").innerText = seconds < 10 ? "0" + seconds : seconds;
     }, 1000);
 
-    // 2. REAL INTERACTIVE LEAFLET MAP SETUP
-    const map = L.map('perthMap').setView([-31.93, 115.75], 11);
-
-    L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
-        maxZoom: 19,
-        attribution: '&copy; <a href="https://carto.com/">CARTO</a>'
-    }).addTo(map);
-
-    const accommodationZoneCoords = [
-        [-32.0150, 115.7450], 
-        [-31.9967, 115.7400], 
-        [-31.9400, 115.7420], 
-        [-31.8935, 115.7380], 
-        [-31.8545, 115.7400], 
-        [-31.8545, 115.7550], 
-        [-31.8935, 115.7580], 
-        [-31.9967, 115.7600]  
-    ];
-
-    L.polygon(accommodationZoneCoords, {
-        color: '#7e22ce',
-        fillColor: '#a855f7',
-        fillOpacity: 0.3,
-        weight: 1.5,
-        dashArray: '5, 5'
-    }).addTo(map).bindPopup("<h4>Accommodation Zone</h4><p>Recommended coastal stay stretch from Cottesloe up to North Beach.</p>");
-
-    const locations = [
-        {
-            name: "Scarborough Sports and Community Club",
-            coords: [-31.8936, 115.7610],
-            title: "Welcome Drinks & Barefoot Bowls",
-            desc: "Thursday 17 February, from 5:30 PM. Join us for welcome drinks and barefoot bowls before the big day. Nibbles will be provided and dinner will be available for purchase.",
-            type: "blue",
-            label: "Welcome Drinks"
-        },
-        {
-            name: "Scarborough",
-            coords: [-31.8935, 115.7516],
-            title: "Scarborough",
-            desc: "A suggested place to stay to be close to the beach, vibrant cafes, and coastal activities throughout the weekend.",
-            type: "purple",
-            label: "Accommodation"
-        },
-        {
-            name: "St Mary Star of the Sea",
-            coords: [-31.9967, 115.7533],
-            title: "St Mary Star of the Sea",
-            desc: "The wedding church ceremony begins at 3:30 PM on Saturday 20 February.",
-            type: "blue",
-            label: "Ceremony"
-        },
-        {
-            name: "Coast Port Beach",
-            coords: [-32.0353, 115.7486],
-            title: "Coast Port Beach",
-            desc: "Festivities kick off here at 5:30 PM for dinner, drinks, and ocean views. Free parking is available onsite, but remember to register your car number plate upon arrival to guarantee it!",
-            type: "blue",
-            label: "Reception"
-        },
-        {
-            name: "Fremantle",
-            coords: [-32.0569, 115.7439],
-            title: "Fremantle",
-            desc: "A historic port city full of character, heritage architecture, vibrant weekend markets, and great coffee spots.",
-            type: "green",
-            label: "Fremantle"
-        },
-        {
-            name: "Rottnest Island",
-            coords: [-32.0047, 115.5393],
-            title: "Rottnest Island",
-            desc: "An incredible day trip destination famous for stunning beaches, crystal-clear waters, and friendly local quokkas!",
-            type: "green",
-            label: "Rottnest Island"
-        },
-        {
-            name: "King's Park",
-            coords: [-31.9566, 115.8404],
-            title: "King's Park & Botanic Garden",
-            desc: "A gorgeous recommendation for pre- or post-wedding exploring, offering sweeping panoramic views across the Swan River and Perth skyline.",
-            type: "green",
-            label: "King's Park"
-        },
-        {
-            name: "Hillarys Boat Harbour",
-            coords: [-31.8288, 115.7391],
-            title: "Hillarys Boat Harbour",
-            desc: "Great spot for a family outing with a lively marina feel, boardwalk dining, shops, and the departure point for Rottnest Island ferries.",
-            type: "green",
-            label: "Hillarys Boat Harbour"
-        },
-        {
-            name: "Margaret River",
-            coords: [-33.9555, 115.0752],
-            title: "Margaret River Region",
-            desc: "Highly recommended for a post-wedding getaway trip down south to experience world-class wineries, breweries, and breathtaking nature.",
-            type: "green",
-            label: "Margaret River"
-        }
-    ];
-
-    const displayBox = document.getElementById('mapInfoCard');
-
-    locations.forEach(loc => {
-        let badgeClass = 'badge-blue';
-        if (loc.type === 'green') badgeClass = 'badge-green';
-        if (loc.type === 'purple') badgeClass = 'badge-purple';
-
-        const customIcon = L.divIcon({
-            className: 'custom-div-icon',
-            html: `<div class="map-badge ${badgeClass}">${loc.label}</div>`,
-            iconSize: [null, null],
-            iconAnchor: [40, 12]
-        });
-
-        const marker = L.marker(loc.coords, { icon: customIcon }).addTo(map);
-        marker.bindPopup(`<h4>${loc.title}</h4><p>${loc.desc}</p>`);
-
-        marker.on('click', () => {
-            displayBox.innerHTML = `<h4>${loc.title}</h4><p>${loc.desc}</p>`;
-        });
-    });
-
-    // 3. SCROLL TIMELINE ANIMATION
+    // 2. SCROLL TIMELINE ANIMATION
     const timelineBlocks = document.querySelectorAll('.timeline-block');
     const observerOptions = { threshold: 0.15, rootMargin: "0px 0px -50px 0px" };
     const timelineObserver = new IntersectionObserver((entries, observer) => {
@@ -717,7 +535,7 @@
     }, observerOptions);
     timelineBlocks.forEach(item => timelineObserver.observe(item));
 
-    // 4. RSVP FORM CONTROLLER
+    // 3. RSVP FORM CONTROLLER
     const rsvpForm = document.getElementById('rsvpForm');
     const successMessage = document.getElementById('successMessage');
     const submitBtn = document.getElementById('submitBtn');
